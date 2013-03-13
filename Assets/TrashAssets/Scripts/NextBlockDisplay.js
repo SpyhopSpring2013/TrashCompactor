@@ -25,11 +25,6 @@ function Update ()
 
 function addNewShape(xVals:Array, yVals:Array, materials:Array)
 {
-	if(nextShapes.length >= 3)
-	{
-		nextShapes.RemoveAt(0);
-	}
-
 	var shapeArray:Array = new Array();
 
 	for(var i:int = 0; i<xVals.length; i++)
@@ -48,9 +43,26 @@ function addNewShape(xVals:Array, yVals:Array, materials:Array)
 
 	nextShapes.Push(shapeArray);
 
+}
+
+function removeShapeAt(index:int)
+{
+	if(index >= nextShapes.length)
+	{
+		//out of range
+		return;
+	}
+
+	nextShapes.RemoveAt(index);
+
+	//shift shapes up
+
 	//make the new first shape bigger
-	var curShape:GameObject = nextShapes[0];
-	curShape.transform.localScale = blockSizePrimary;
-	//TODO: move blocks correctly
+	if(index == 0)
+	{
+		var curShape:GameObject = nextShapes[0];
+		//curShape.transform.position
+		curShape.transform.localScale = blockSizePrimary;
+	}
 
 }
