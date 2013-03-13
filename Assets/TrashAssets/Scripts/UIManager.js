@@ -3,6 +3,7 @@
 public var gameManager:GameManager;
 public var screenGrid:ScreenGrid;
 public var nextBlockDisplay:NextBlockDisplay;
+public var lineClearParticles:LineClearParticleAffecter;
 
 public var blockTemplates:GameObject[];
 
@@ -86,6 +87,7 @@ function onMoveCurrentShape(xVals:Array, yVals:Array)
 function onClearLine(row:int, style:int)
 {
 	screenGrid.clearLine(row);
+	lineClearParticles.onClearLine(row,style);
 }
 
 function onNewNextShape(shape:int, material:int)

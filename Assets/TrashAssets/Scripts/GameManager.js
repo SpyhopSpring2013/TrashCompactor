@@ -197,7 +197,6 @@ function clearLine(row:int)
 		setGameLevel(gameLevel + 1);
 	}
 	pushEmptyLine();
-	Debug.Log(style);
 	uiManager.onClearLine(row,style);
 }
 
