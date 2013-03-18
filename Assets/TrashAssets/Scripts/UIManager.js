@@ -74,6 +74,7 @@ function onPlaceShape(xVals:Array, yVals:Array)
 function onAddGridShape(xVals:Array, yVals:Array, material:int)
 {
 	screenGrid.addGridShape(xVals, yVals, material);
+	nextBlockDisplay.removeShapeAt(0);
 }
 
 function onMoveCurrentShape(xVals:Array, yVals:Array)
@@ -90,9 +91,9 @@ function onClearLine(row:int, style:int)
 	lineClearParticles.onClearLine(row,style);
 }
 
-function onNewNextShape(shape:int, material:int)
+function onNewNextShape(xVals:Array, yVals:Array, materials:Array)
 {
-
+	nextBlockDisplay.addNewShape(xVals,yVals,materials);
 }
 
 /*

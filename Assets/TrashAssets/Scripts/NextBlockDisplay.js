@@ -2,20 +2,22 @@
 
 public var uiManager:UIManager;
 
+public var emptyObject:GameObject;
+
 public var posOffset:Vector3 = Vector3(3.0,0,0);
-public var blockSizePrimary:Vector3 = Vector3(0.5,0.5,0.5);
+//public var blockSizePrimary:Vector3 = Vector3(0.5,0.5,0.5);
 public var blockSizeSecondary:Vector3 = Vector3(0.3,0.3,0.3);
 
 private var nextShapes:Array;
 
-function Start () 
+function Awake()
 {
 	nextShapes = new Array();
-	for(var i:int = 0; i<3; i++)
-	{
-		var shape:Array = new Array();
-		nextShapes.Push(shape);
-	}
+}
+
+function Start () 
+{
+	//nextShapes = new Array();
 }
 
 function Update () 
@@ -25,24 +27,22 @@ function Update ()
 
 function addNewShape(xVals:Array, yVals:Array, materials:Array)
 {
-	var shapeArray:Array = new Array();
-
+	var parentObject:GameObject = Instantiate(emptyObject, Vector3(0,0,0), Quaternion.identity);
 	for(var i:int = 0; i<xVals.length; i++)
 	{
 		var curX:int = xVals[i];
 		var curY:int = yVals[i];
 		var curMaterial:int = materials[i];
 		var obj:GameObject = Instantiate(uiManager.blockTemplates[curMaterial], 
-								Vector3(posOffset.x + blockSizeSecondary.x/2 + curX*blockSizeSecondary.x, 
-									    posOffset.y + blockSizeSecondary.y/2 + curY*blockSizeSecondary.y + nextShapes.length*blockSizePrimary.y*5, 
-									    posOffset.z), 
+								Vector3(blockSizeSecondary.x/2 + curX*blockSizeSecondary.x, blockSizeSecondary.y/2 + curY*blockSizeSecondary.y, 0), 
 								Quaternion.identity);
 		obj.transform.localScale = blockSizeSecondary;
-		shapeArray.Push(obj);
+		obj.transform.parent = parentObject.transform;
+		//shapeArray.Push(obj);
 	}
 
-	nextShapes.Push(shapeArray);
-
+	parentObject.transform.position = Vector3(posOffset.x, posOffset.y - nextShapes.length*blockSizeSecondary.y*4, posOffset.z);
+	nextShapes.Push(parentObject);
 }
 
 function removeShapeAt(index:int)
@@ -53,16 +53,28 @@ function removeShapeAt(index:int)
 		return;
 	}
 
+	var removedShaped:GameObject = nextShapes[index];
+	var destroyList:Array = new Array();
+	for(var child:Transform in removedShaped.transform)
+	{
+		destroyList.Push(child.gameObject);
+	}
+
+	for(var destroyChild in destroyList)
+	{
+		Destroy(destroyChild);
+	}
+
 	nextShapes.RemoveAt(index);
 
 	//shift shapes up
-
-	//make the new first shape bigger
-	if(index == 0)
+	for(var i:int = index; i<nextShapes.length; i++)
 	{
-		var curShape:GameObject = nextShapes[0];
-		//curShape.transform.position
-		curShape.transform.localScale = blockSizePrimary;
+		var shapeObj:GameObject = nextShapes[i];
+		shapeObj.transform.Translate(Vector3(0.0,blockSizeSecondary.y*4,0.0));
+		if(index == 0)
+		{
+			//shapeObj.transform.localScale = blockSizePrimary;
+		}
 	}
-
 }
