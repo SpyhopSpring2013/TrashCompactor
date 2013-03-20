@@ -27,7 +27,6 @@ function Update ()
 
 function addNewShape(xVals:Array, yVals:Array, materials:Array)
 {
-	Debug.Log(yVals);
 	var parentObject:GameObject = Instantiate(emptyObject, Vector3(0,0,0), Quaternion.identity);
 	for(var i:int = 0; i<xVals.length; i++)
 	{

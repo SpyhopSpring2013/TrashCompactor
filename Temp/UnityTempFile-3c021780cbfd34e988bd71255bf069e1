@@ -57,5 +57,6 @@
 'Assets/TrashAssets/Scripts/LineClearParticleDestroyer.js'
 'Assets/TrashAssets/Scripts/NextBlockDisplay.js'
 'Assets/TrashAssets/Scripts/PopupFadeText.js'
+'Assets/TrashAssets/Scripts/ScoreManager.js'
 'Assets/TrashAssets/Scripts/ScreenGrid.js'
 'Assets/TrashAssets/Scripts/UIManager.js'

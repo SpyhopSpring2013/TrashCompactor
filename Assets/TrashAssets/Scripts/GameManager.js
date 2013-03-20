@@ -1,6 +1,7 @@
 #pragma strict
 
 public var uiManager:UIManager;
+public var scoreManager:ScoreManager;
 
 private var gridTiles:Array;
 
@@ -212,6 +213,7 @@ function clearLine(row:int)
 		setGameLevel(gameLevel + 1);
 	}
 	pushEmptyLine();
+	scoreManager.onClearLine(materialCounts);
 	uiManager.onClearLine(row,style);
 }
 

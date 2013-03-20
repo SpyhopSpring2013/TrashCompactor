@@ -65,6 +65,7 @@
      <Compile Include="Assets\TrashAssets\Scripts\LineClearParticleDestroyer.js" />
      <Compile Include="Assets\TrashAssets\Scripts\NextBlockDisplay.js" />
      <Compile Include="Assets\TrashAssets\Scripts\PopupFadeText.js" />
+     <Compile Include="Assets\TrashAssets\Scripts\ScoreManager.js" />
      <Compile Include="Assets\TrashAssets\Scripts\ScreenGrid.js" />
      <Compile Include="Assets\TrashAssets\Scripts\UIManager.js" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
