@@ -34,9 +34,19 @@ function Start ()
 	}
 
 	nextShapes = new Array();
-	for(i = 0; i < 2; i++)
+	for(i = 0; i < 3; i++)
 	{
-		nextShapes.Push(new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18));
+		var shape:GridShape = new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18);
+		nextShapes.Push(shape);
+		var blockCoord:Array = getShapeBlockCoord(shape.m_shape, shape.m_rotation);
+		var xArray:Array = blockCoord[0];
+		var yArray:Array = blockCoord[1];
+		var matArray:Array = new Array();
+		for(var j:int = 0; j< xArray.length; j++)
+		{
+			matArray.Push(shape.m_material);
+		}
+		uiManager.onNewNextShape(xArray, yArray, matArray);	
 	}
 	addNextGridShape();
 	
@@ -519,7 +529,15 @@ function addNextGridShape()
 	nextShapes.RemoveAt(0);
 	var shape:GridShape = new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18);
 	nextShapes.Push(shape);
-	uiManager.onNewNextShape(shape.m_shape, shape.m_material);
+	var blockCoord:Array = getShapeBlockCoord(shape.m_shape, shape.m_rotation);
+	var xArray:Array = blockCoord[0];
+	var yArray:Array = blockCoord[1];
+	var matArray:Array = new Array();
+	for(var i:int = 0; i< xArray.length; i++)
+	{
+		matArray.Push(shape.m_material);
+	}
+	uiManager.onNewNextShape(xArray, yArray, matArray);
 }
 
 function setGameLevel(level:int)
