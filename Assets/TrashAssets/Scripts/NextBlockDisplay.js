@@ -4,7 +4,7 @@ public var uiManager:UIManager;
 
 public var emptyObject:GameObject;
 
-public var posOffset:Vector3 = Vector3(3.0,0,0);
+public var posOffset:Vector3 = Vector3(3.0,3.5,-3.0);
 //public var blockSizePrimary:Vector3 = Vector3(0.5,0.5,0.5);
 public var blockSizeSecondary:Vector3 = Vector3(0.3,0.3,0.3);
 
