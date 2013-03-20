@@ -40,7 +40,6 @@ function startNewGame(level:int)
 	if(gameIsPlaying())
 	{
 		gameManager.startNewGame(level);
-                      
 	}
 }
 
@@ -62,6 +61,14 @@ function rotateCurrentShapeLeft()
 {
 	if(gameManager.playerHasControl())
 		gameManager.rotateCurrentShapeLeft();
+}
+
+function dropCurrentShape()
+{
+	if(gameManager.playerHasControl())
+	{
+		gameManager.dropCurrentShape();
+	}
 }
 
 //---------------- FUNCTIONS CALLED BY GAMEMANAGER ----------- \\

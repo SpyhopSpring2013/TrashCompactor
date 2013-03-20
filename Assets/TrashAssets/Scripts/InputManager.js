@@ -87,6 +87,10 @@ function Update ()
 		{
 			uiManager.rotateCurrentShapeLeft();
 		}
+		else if(Input.GetKeyDown(KeyCode.Space))
+		{
+			uiManager.dropCurrentShape();
+		}
 		if(debugMode)
 		{
 			//debug functions

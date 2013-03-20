@@ -143,6 +143,11 @@ function rotateCurrentShapeLeft()
 	rotateShapeLeft(currentShape);
 }
 
+function dropCurrentShape()
+{
+	dropShape(currentShape);
+}
+
 //----------- Functions that callback to UIManager -------\\
 
 function isLineFilled(row:int):boolean
@@ -544,5 +549,14 @@ function setGameLevel(level:int)
 {
 	gameLevel = level;
 	currentShapeMoveDelay = 2.0/level;
+}
+
+function dropShape(shape:GridShape):boolean
+{
+	while(moveShape(shape, shape.m_x, shape.m_y-1))
+	{
+	}
+	placeShape(shape);
+	addNextGridShape();
 }
 
