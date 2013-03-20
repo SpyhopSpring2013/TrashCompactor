@@ -27,6 +27,7 @@ function Update ()
 
 function addNewShape(xVals:Array, yVals:Array, materials:Array)
 {
+	Debug.Log(yVals);
 	var parentObject:GameObject = Instantiate(emptyObject, Vector3(0,0,0), Quaternion.identity);
 	for(var i:int = 0; i<xVals.length; i++)
 	{
@@ -34,7 +35,7 @@ function addNewShape(xVals:Array, yVals:Array, materials:Array)
 		var curY:int = yVals[i];
 		var curMaterial:int = materials[i];
 		var obj:GameObject = Instantiate(uiManager.blockTemplates[curMaterial], 
-								Vector3(blockSizeSecondary.x/2 + curX*blockSizeSecondary.x, blockSizeSecondary.y/2 + curY*blockSizeSecondary.y, 0), 
+								Vector3(blockSizeSecondary.x/2 + curX*blockSizeSecondary.x, blockSizeSecondary.y/2 + (4-curY)*blockSizeSecondary.y, 0), 
 								Quaternion.identity);
 		obj.transform.localScale = blockSizeSecondary;
 		obj.transform.parent = parentObject.transform;
