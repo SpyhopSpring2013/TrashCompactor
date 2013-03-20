@@ -17,19 +17,19 @@ public function onClearLine(row:int, style:int)
 	if(style == 1){
 	Instantiate(sparkEffectGlass, Vector3(uiManager.posOffset.x+uiManager.blockSize.x*10/2,
 									uiManager.posOffset.y + uiManager.blockSize.y*row + uiManager.blockSize.y/2,
-									uiManager.posOffset.z),
+									uiManager.posOffset.z-1),
 									Quaternion.identity);
 	}
 	if(style == 2){
 	Instantiate(sparkEffectPaper, Vector3(uiManager.posOffset.x+uiManager.blockSize.x*10/2,
 									uiManager.posOffset.y + uiManager.blockSize.y*row + uiManager.blockSize.y/2,
-									uiManager.posOffset.z),
+									uiManager.posOffset.z-1),
 									Quaternion.identity);
 	}
 	if(style == 3){
 	Instantiate(sparkEffectPlastic, Vector3(uiManager.posOffset.x+uiManager.blockSize.x*10/2,
 									uiManager.posOffset.y + uiManager.blockSize.y*row + uiManager.blockSize.y/2,
-									uiManager.posOffset.z),
+									uiManager.posOffset.z-1),
 									Quaternion.identity);
 	}
 
