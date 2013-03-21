@@ -1,6 +1,7 @@
 #pragma strict
 
 public var gameManager:GameManager;
+public var scoreManager:ScoreManager;
 public var screenGrid:ScreenGrid;
 public var nextBlockDisplay:NextBlockDisplay;
 public var lineClearParticles:LineClearParticleAffecter;
