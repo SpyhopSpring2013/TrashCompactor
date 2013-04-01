@@ -85,17 +85,20 @@ function Update ()
 		lockTimer = 0.0;
 	}
 	*/
-
-	currentShapeMoveTimer += Time.deltaTime;
-	if(currentShapeMoveTimer >= currentShapeMoveDelay)
+	if(uiManager.currentScreen == uiManager.gameScreen)
 	{
-		if(currentShape)
+		scoreManager.playTime += Time.deltaTime;
+		currentShapeMoveTimer += Time.deltaTime;
+		if(currentShapeMoveTimer >= currentShapeMoveDelay)
 		{
-			//move down a step
-			moveCurrentShape(1);
-		}
+			if(currentShape)
+			{
+				//move down a step
+				moveCurrentShape(1);
+			}
 
-		currentShapeMoveTimer = 0.0;
+			currentShapeMoveTimer = 0.0;
+		}
 	}
 
 }
@@ -103,6 +106,11 @@ function Update ()
 //----------- Functions called by UIManager ---------\\
 function startNewGame(level:int):void
 {
+}
+
+function endGame():void
+{
+	uiManager.onGameOver();
 }
 
 function playerHasControl():boolean
@@ -517,12 +525,15 @@ function addGridShape(shape:GridShape)
 				var gridY:int = j+shape.m_y;
 				var row:Array = gridTiles[gridY];
 				var block:GridBlock = row[gridX];
+				
 				if(block.m_material)
 				{
-					block.m_material = shape.m_material;
+					endGame();
+					return;
 				}
 				xVals.Push(gridX);
 				yVals.Push(gridY);
+
 			}
 		}
 	}
@@ -550,6 +561,7 @@ function addNextGridShape()
 function setGameLevel(level:int)
 {
 	gameLevel = level;
+	scoreManager.level = level;
 	currentShapeMoveDelay = 2.0/level;
 }
 

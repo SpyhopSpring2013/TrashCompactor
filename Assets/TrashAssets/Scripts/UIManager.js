@@ -11,6 +11,14 @@ public var blockTemplates:GameObject[];
 public var posOffset:Vector3 = Vector3(-2.76,-6,-0.5);
 public var blockSize:Vector3 = Vector3(0.55, 0.55, 0.55);
 
+public var currentScreen:int = 0;
+
+//screen vars
+public var gameScreen:int = 0;
+public var startScreen:int = 1;
+public var gameOverScreen:int = 2;
+public var pauseScreen:int = 3;
+
 //private var curBlocks:Array;
 //private var blockObjects:Array;
 
@@ -22,6 +30,19 @@ function Start ()
 
 function Update () 
 {
+}
+
+function OnGUI ()
+{
+	if(currentScreen == gameScreen)
+	{
+
+	}
+	else if(currentScreen == gameOverScreen)
+	{
+		//GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), );
+		GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
+	}
 
 }
 
@@ -102,6 +123,11 @@ function onClearLine(row:int, style:int)
 function onNewNextShape(xVals:Array, yVals:Array, materials:Array)
 {
 	nextBlockDisplay.addNewShape(xVals,yVals,materials);
+}
+
+function onGameOver()
+{
+	currentScreen = gameOverScreen;
 }
 
 /*
