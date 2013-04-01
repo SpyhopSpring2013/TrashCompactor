@@ -79,7 +79,7 @@ function Update ()
 			*/
 			if(Input.GetKeyDown(KeyCode.R))
 			{
-				uiManager.startNewGame(0);
+				uiManager.startNewGame(1);
 			}
 			else if(Input.GetKeyDown(KeyCode.X))
 			{

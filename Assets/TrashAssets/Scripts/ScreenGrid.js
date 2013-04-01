@@ -5,7 +5,7 @@ public var uiManager:UIManager;
 private var kMaxRows:int = 26;
 private var kMaxColumns:int = 10;
 
-private var gridObjects:Array; //GameObject
+private var gridObjects:Array; //array -> GameObject
 private var currentObjects:Array; //GameObject
 private var currentGridX:Array; //int
 private var currentGridY:Array; //int
@@ -14,8 +14,33 @@ function Start ()
 {
 }
 
-function Awake()
+function Update () 
 {
+
+}
+
+function onNewGame()
+{
+	if(gridObjects)
+	{
+		for(var j:int = 0; j<gridObjects.length; j++)
+		{
+			var row:Array = gridObjects[j];
+			for(var j1:int = 0; j1<row.length; j1++)
+			{
+				var obj:GameObject = row[j1];
+				Destroy(obj);
+			}
+		}
+	}
+	if(currentObjects)
+	{
+		for(var k:int = 0; k<currentObjects.length; k++)
+		{
+			var obj2:GameObject = currentObjects[k];
+			Destroy(obj2);
+		}
+	}
 	gridObjects = new Array();
 	for(var i:int = 0; i< kMaxRows; i++)
 	{
@@ -24,11 +49,6 @@ function Awake()
 	currentObjects = new Array();
 	currentGridX = new Array();
 	currentGridY = new Array();
-}
-
-function Update () 
-{
-
 }
 
 function pushEmptyLine()

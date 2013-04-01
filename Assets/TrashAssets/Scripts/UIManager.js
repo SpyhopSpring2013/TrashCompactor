@@ -26,6 +26,7 @@ function Start ()
 {
 	//curBlocks = new Array();
 	//blockObjects = new Array();
+	startNewGame(1);
 }
 
 function Update () 
@@ -59,10 +60,14 @@ function gameIsPlaying():boolean
 
 function startNewGame(level:int)
 {
-	if(gameIsPlaying())
-	{
+	//if(gameIsPlaying())
+	//{
+
+		screenGrid.onNewGame();
+		nextBlockDisplay.onNewGame();
+		scoreManager.onNewGame(level);
 		gameManager.startNewGame(level);
-	}
+	//}
 }
 
 //direction - 0 = right, 1 = down, 2 = left, 3 = up

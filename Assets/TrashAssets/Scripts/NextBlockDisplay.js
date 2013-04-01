@@ -10,11 +10,6 @@ public var blockSizeSecondary:Vector3 = Vector3(0.3,0.3,0.3);
 
 private var nextShapes:Array;
 
-function Awake()
-{
-	nextShapes = new Array();
-}
-
 function Start () 
 {
 	//nextShapes = new Array();
@@ -23,6 +18,18 @@ function Start ()
 function Update () 
 {
 
+}
+
+function onNewGame()
+{
+	if(nextShapes)
+	{
+		for(var obj:GameObject in nextShapes)
+		{
+			Destroy(obj);
+		}
+	}
+	nextShapes = new Array();
 }
 
 function addNewShape(xVals:Array, yVals:Array, materials:Array)

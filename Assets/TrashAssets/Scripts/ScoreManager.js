@@ -1,14 +1,14 @@
 #pragma strict
 
-private var glassBlocksCleared:int = 0;
-private var paperBlocksCleared:int = 0;
-private var plasticBlocksCleared:int = 0;
-private var linesCleared:int = 0;
-public var level:int = 1;
-private var percentPurity:float = 0.0;
-public var playTime:float = 0.0;
+private var glassBlocksCleared:int;
+private var paperBlocksCleared:int;
+private var plasticBlocksCleared:int;
+private var linesCleared:int;
+public var level:int;
+private var percentPurity:float;
+public var playTime:float;
 
-private var score:int = 0;
+private var score:int;
 
 
 function Start () {
@@ -17,6 +17,18 @@ function Start () {
 
 function Update () {
 
+}
+
+function onNewGame(lLevel:int)
+{
+	glassBlocksCleared = 0;
+	paperBlocksCleared = 0;
+	plasticBlocksCleared = 0;
+	linesCleared = 0;
+	level = lLevel;
+	percentPurity = 0.0;
+	playTime = 0.0;
+	score = 0;
 }
 
 function onClearLine(materialCounts:Array)
@@ -54,10 +66,7 @@ function onClearLine(materialCounts:Array)
 		style = 3;
 	}
 	var majorityMaterial:float = materialCounts[((style-1)%3)+1];
-	Debug.Log(majorityMaterial);
 	var curPurity:float = majorityMaterial/10.0;
-	Debug.Log(curPurity);
 	var linesClearedFloat:float = linesCleared;
 	percentPurity = (percentPurity*(linesClearedFloat-1) + curPurity)/linesClearedFloat;
-	Debug.Log(percentPurity);
 }

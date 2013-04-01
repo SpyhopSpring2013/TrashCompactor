@@ -11,47 +11,23 @@ private var nextShapes:Array;
 private var kMaxRows:int = 26;
 private var kMaxColumns:int = 10;
 
-private var lockTimer:float = 0.0;
-private var lockTimerOn:boolean = false;
+private var lockTimer:float;
+private var lockTimerOn:boolean;
 private var lockTimerDelay:float = 0.5;
 
-private var currentShapeMoveTimer:float = 0.0;
+private var currentShapeMoveTimer:float;
 private var currentShapeMoveDelay:float;
 
-private var canMoveDownLast:boolean = true;
+private var canMoveDownLast:boolean;
 
-private var gameLevel:int = 1;
-private var linesCleared:int = 0;
+private var gameLevel:int;
+private var linesCleared:int;
 
 
 
 function Start () 
 {
-	gridTiles = new Array();
-	//24 rows
-	for(var i:int = 0; i < kMaxRows; i++)
-	{
-		pushEmptyLine();
-	}
 
-	nextShapes = new Array();
-	for(i = 0; i < 3; i++)
-	{
-		var shape:GridShape = new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18);
-		nextShapes.Push(shape);
-		var blockCoord:Array = getShapeBlockCoord(shape.m_shape, shape.m_rotation);
-		var xArray:Array = blockCoord[0];
-		var yArray:Array = blockCoord[1];
-		var matArray:Array = new Array();
-		for(var j:int = 0; j< xArray.length; j++)
-		{
-			matArray.Push(shape.m_material);
-		}
-		uiManager.onNewNextShape(xArray, yArray, matArray);	
-	}
-	addNextGridShape();
-	
-	setGameLevel(1);
 	/*
 	Debug.Log(currentShape.m_shape);
 	Debug.Log(currentShape.m_x);
@@ -106,6 +82,38 @@ function Update ()
 //----------- Functions called by UIManager ---------\\
 function startNewGame(level:int):void
 {
+	gridTiles = new Array();
+	//24 rows
+	for(var i:int = 0; i < kMaxRows; i++)
+	{
+		pushEmptyLine();
+	}
+
+	nextShapes = new Array();
+	for(i = 0; i < 3; i++)
+	{
+		var shape:GridShape = new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18);
+		nextShapes.Push(shape);
+		var blockCoord:Array = getShapeBlockCoord(shape.m_shape, shape.m_rotation);
+		var xArray:Array = blockCoord[0];
+		var yArray:Array = blockCoord[1];
+		var matArray:Array = new Array();
+		for(var j:int = 0; j< xArray.length; j++)
+		{
+			matArray.Push(shape.m_material);
+		}
+		uiManager.onNewNextShape(xArray, yArray, matArray);	
+	}
+	addNextGridShape();
+	
+	lockTimer = 0.0;
+	lockTimerOn = false;
+	currentShapeMoveTimer = 0.0;
+	currentShapeMoveDelay = 0.0;
+	canMoveDownLast = true;
+	linesCleared = 0;
+
+	setGameLevel(level);
 }
 
 function endGame():void
