@@ -38,13 +38,13 @@ function OnGUI(){
 
 	if (GUI.Button (Rect (20,100,80,80), "Add 100")){
 		addScore(100);
-		particleAffecter.onClearLine(3,1);
+		particleAffecter.onClearLine(3,2);
 	}
 
 
 	if (GUI.Button (Rect (20,180,80,80), "Add 200")){
 		addScore(200);
-		particleAffecter.onClearLine(5,1);
+		particleAffecter.onClearLine(5,3);
 	}
 	for(var i:int = 0; i< popupFadeTextArray.length; i++)
 	{
