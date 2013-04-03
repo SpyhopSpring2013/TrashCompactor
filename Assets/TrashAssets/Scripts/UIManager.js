@@ -5,6 +5,7 @@ public var scoreManager:ScoreManager;
 public var screenGrid:ScreenGrid;
 public var nextBlockDisplay:NextBlockDisplay;
 public var lineClearParticles:LineClearParticleAffecter;
+public var guiManager:GUIManager;
 
 public var blockTemplates:GameObject[];
 
@@ -49,7 +50,7 @@ function OnGUI ()
 
 function gameIsPlaying():boolean
 {
-	return true;
+	return (currentScreen == gameScreen);
 }
 
 
@@ -66,6 +67,7 @@ function startNewGame(level:int)
 		screenGrid.onNewGame();
 		nextBlockDisplay.onNewGame();
 		scoreManager.onNewGame(level);
+		guiManager.onNewGame(level);
 		gameManager.startNewGame(level);
 	//}
 }
@@ -123,6 +125,7 @@ function onClearLine(row:int, style:int)
 {
 	screenGrid.clearLine(row);
 	lineClearParticles.onClearLine(row,style);
+	guiManager.onPurityChange(scoreManager.getPercentPurity());
 }
 
 function onNewNextShape(xVals:Array, yVals:Array, materials:Array)
@@ -135,6 +138,16 @@ function onGameOver()
 	currentScreen = gameOverScreen;
 }
 
+function onAddScore(score:int)
+{
+	guiManager.addScore(score);
+}
+
+function onLevelChange(level:int)
+{
+	scoreManager.onLevelChange(level);
+	guiManager.onLevelChange(level);
+}
 /*
 function createNewShape(numBlocks:int, xVals:int[], yVals:int[])
 {

@@ -23,6 +23,7 @@ private var canMoveDownLast:boolean;
 private var gameLevel:int;
 private var linesCleared:int;
 
+//private var lineBonus:int;
 
 
 function Start () 
@@ -67,6 +68,7 @@ function Update ()
 		currentShapeMoveTimer += Time.deltaTime;
 		if(currentShapeMoveTimer >= currentShapeMoveDelay)
 		{
+			//linebonus = 1;
 			if(currentShape)
 			{
 				//move down a step
@@ -112,6 +114,7 @@ function startNewGame(level:int):void
 	currentShapeMoveDelay = 0.0;
 	canMoveDownLast = true;
 	linesCleared = 0;
+	//lineBonus = 1;
 
 	setGameLevel(level);
 }
@@ -228,8 +231,10 @@ function clearLine(row:int)
 	{
 		setGameLevel(gameLevel + 1);
 	}
+	//lineBonus++;
 	pushEmptyLine();
-	scoreManager.onClearLine(materialCounts);
+	//scoreManager.onClearLine(materialCounts, lineBonus);
+	scoreManager.pushLineMaterials(materialCounts);
 	uiManager.onClearLine(row,style);
 }
 
@@ -313,6 +318,7 @@ function placeShape(shape:GridShape)
 	//check if any lines are full
 	var lastY:int = -1;
 	//start at top row to avoid indexing problems
+	var linesCleared:int = 0;
 	for(var blockIt:int = yVals.length - 1; blockIt >= 0; blockIt--)
 	{
 		if(lastY == yVals[blockIt])
@@ -321,11 +327,13 @@ function placeShape(shape:GridShape)
 		if(isLineFilled(yVals[blockIt]))
 		{
 			clearLine(yVals[blockIt]);
+			linesCleared++;
 		}
 
 		lastY = yVals[blockIt];
 	}
-
+	if(linesCleared > 0)
+		uiManager.onAddScore(scoreManager.onClearLines(linesCleared));
 }
 
 function moveShape(shape:GridShape,x:int, y:int):boolean
@@ -569,8 +577,8 @@ function addNextGridShape()
 function setGameLevel(level:int)
 {
 	gameLevel = level;
-	scoreManager.level = level;
 	currentShapeMoveDelay = 2.0/level;
+	uiManager.onLevelChange(level);
 }
 
 function dropShape(shape:GridShape):boolean
@@ -581,4 +589,3 @@ function dropShape(shape:GridShape):boolean
 	placeShape(shape);
 	addNextGridShape();
 }
-

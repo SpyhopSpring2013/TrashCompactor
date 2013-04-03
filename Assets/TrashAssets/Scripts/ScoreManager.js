@@ -4,11 +4,13 @@ private var glassBlocksCleared:int;
 private var paperBlocksCleared:int;
 private var plasticBlocksCleared:int;
 private var linesCleared:int;
-public var level:int;
+private var level:int;
 private var percentPurity:float;
 public var playTime:float;
 
 private var score:int;
+
+private var pendingScore:int;
 
 
 function Start () {
@@ -31,7 +33,7 @@ function onNewGame(lLevel:int)
 	score = 0;
 }
 
-function onClearLine(materialCounts:Array)
+function pushLineMaterials(materialCounts:Array)
 {
 	linesCleared++;
 
@@ -65,8 +67,36 @@ function onClearLine(materialCounts:Array)
 	{
 		style = 3;
 	}
-	var majorityMaterial:float = materialCounts[((style-1)%3)+1];
-	var curPurity:float = majorityMaterial/10.0;
+	var majorityMaterialCount:float = materialCounts[((style-1)%3)+1];
+	var curPurity:float = majorityMaterialCount/10.0;
 	var linesClearedFloat:float = linesCleared;
 	percentPurity = (percentPurity*(linesClearedFloat-1) + curPurity)/linesClearedFloat;
+
+	if(majorityMaterialCount < 10)
+		pendingScore += majorityMaterialCount;
+	else
+		pendingScore += 50;
+}
+
+public function onClearLines(lineCount:int):int
+{
+	var deltaScore = pendingScore * lineCount * level * 0.1 * 100;
+	score += deltaScore;
+	pendingScore = 0;
+	return deltaScore;
+}
+
+public function getScore()
+{
+	return score;
+}
+
+function onLevelChange(nlevel:int)
+{
+	level = nlevel;
+}
+
+public function getPercentPurity():float
+{
+	return percentPurity;
 }
