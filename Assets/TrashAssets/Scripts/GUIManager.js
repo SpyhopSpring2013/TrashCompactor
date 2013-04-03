@@ -1,7 +1,7 @@
 public var particleAffecter: LineClearParticleAffecter;
 
 public var debug = false;
-
+public var draw:boolean = false;
 
 var scoreGUISkin: GUISkin;
 private var score:int;
@@ -44,47 +44,50 @@ function onNewGame(level:int)
 
 function OnGUI()
 {
-	GUI.skin = scoreGUISkin;
-	//GUI.skin.label.fontSize = 30;
-
-	if(debug)
+	if(draw)
 	{
-		if (GUI.Button (Rect (20,20,80,80), "Add 50"))
+		GUI.skin = scoreGUISkin;
+		//GUI.skin.label.fontSize = 30;
+
+		if(debug)
 		{
-			addScore(50);
-			particleAffecter.onClearLine(0,1);
+			if (GUI.Button (Rect (20,20,80,80), "Add 50"))
+			{
+				addScore(50);
+				particleAffecter.onClearLine(0,1);
+			}
+
+
+			if (GUI.Button (Rect (20,100,80,80), "Add 100")){
+				addScore(100);
+				particleAffecter.onClearLine(3,2);
+			}
+
+
+			if (GUI.Button (Rect (20,180,80,80), "Add 200")){
+				addScore(200);
+				particleAffecter.onClearLine(5,3);
+			}
 		}
-
-
-		if (GUI.Button (Rect (20,100,80,80), "Add 100")){
-			addScore(100);
-			particleAffecter.onClearLine(3,2);
-		}
-
-
-		if (GUI.Button (Rect (20,180,80,80), "Add 200")){
-			addScore(200);
-			particleAffecter.onClearLine(5,3);
-		}
-	}
-	//popup text
-	for(var i:int = 0; i< popupFadeTextArray.length; i++)
-	{
-		var fadeText:PopupFadeText = popupFadeTextArray[i];
-
-		if(fadeText.isDone())
+		//popup text
+		for(var i:int = 0; i< popupFadeTextArray.length; i++)
 		{
-			popupFadeTextArray.RemoveAt(i);
-			i--;
-			continue;
+			var fadeText:PopupFadeText = popupFadeTextArray[i];
+
+			if(fadeText.isDone())
+			{
+				popupFadeTextArray.RemoveAt(i);
+				i--;
+				continue;
+			}
+			fadeText.update(Time.deltaTime);
+			fadeText.draw();
 		}
-		fadeText.update(Time.deltaTime);
-		fadeText.draw();
+		//score text
+		GUI.Label(Rect(scorePixelPosition.x, scorePixelPosition.y, 600,100), score.ToString());
+		GUI.Label(Rect(levelPixelPosition.x, levelPixelPosition.y, 600,100), level.ToString());
+		GUI.Label(Rect(purityPixelPosition.x, purityPixelPosition.y, 600,100), (purity*100.0).ToString("F2") + "%");
 	}
-	//score text
-	GUI.Label(Rect(scorePixelPosition.x, scorePixelPosition.y, 600,100), score.ToString());
-	GUI.Label(Rect(levelPixelPosition.x, levelPixelPosition.y, 600,100), level.ToString());
-	GUI.Label(Rect(purityPixelPosition.x, purityPixelPosition.y, 600,100), (purity*100.0).ToString("F2") + "%");
 
 }
 

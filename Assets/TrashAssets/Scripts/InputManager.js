@@ -22,8 +22,8 @@ function Update ()
 	switch(inputType)
 	{
 	case 0:
-		if(uiManager.currentScreen == uiManager.gameScreen)
-			{
+		if(uiManager.gameIsPlaying())
+		{
 			for(var i:int = 0; i< 4; i++)
 				keyPressedRefireTimer[i] += Time.deltaTime;
 
@@ -97,7 +97,14 @@ function Update ()
 			{
 				//debug functions
 			}
-	}
+		}
+		if(uiManager.currentScreen == uiManager.gameOverScreen)
+		{
+			if(Input.GetKeyDown(KeyCode.R))
+			{
+				uiManager.startNewGame(1);
+			}
+		}
 	break;
 //--------------------------------------------------//
 

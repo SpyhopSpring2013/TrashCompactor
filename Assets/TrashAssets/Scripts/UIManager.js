@@ -38,12 +38,18 @@ function OnGUI ()
 {
 	if(currentScreen == gameScreen)
 	{
-
+		guiManager.draw = true;
 	}
-	else if(currentScreen == gameOverScreen)
+	else
+	{
+		guiManager.draw = false;
+	}
+	
+	if(currentScreen == gameOverScreen)
 	{
 		//GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), );
 		GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
+		GUI.Label(Rect(100,300,500,100), "Final Score: " + (scoreManager.getScore() * 1+(scoreManager.getPercentPurity())).ToString());
 	}
 
 }
@@ -63,12 +69,16 @@ function startNewGame(level:int)
 {
 	//if(gameIsPlaying())
 	//{
+		if(currentScreen == gameScreen || currentScreen == gameOverScreen)
+		{
+			setCurrentScreen(gameScreen);
 
-		screenGrid.onNewGame();
-		nextBlockDisplay.onNewGame();
-		scoreManager.onNewGame(level);
-		guiManager.onNewGame(level);
-		gameManager.startNewGame(level);
+			screenGrid.onNewGame();
+			nextBlockDisplay.onNewGame();
+			scoreManager.onNewGame(level);
+			guiManager.onNewGame(level);
+			gameManager.startNewGame(level);
+		}
 	//}
 }
 
@@ -135,7 +145,7 @@ function onNewNextShape(xVals:Array, yVals:Array, materials:Array)
 
 function onGameOver()
 {
-	currentScreen = gameOverScreen;
+	setCurrentScreen(gameOverScreen);
 }
 
 function onAddScore(score:int)
@@ -188,3 +198,7 @@ function onLineFinish(lineNum:int, score:int)
 
 */
 
+function setCurrentScreen(screen:int)
+{
+	currentScreen = screen;	
+}
