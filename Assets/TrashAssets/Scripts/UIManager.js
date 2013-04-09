@@ -49,7 +49,7 @@ function OnGUI ()
 	{
 		//GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), );
 		GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
-		GUI.Label(Rect(100,300,500,100), "Final Score: " + (scoreManager.getScore() * 1+(scoreManager.getPercentPurity())).ToString());
+		GUI.Label(Rect(100,300,500,100), "Final Score: " + (scoreManager.getScore() * (.6+scoreManager.getPercentPurity())).ToString());
 	}
 
 }

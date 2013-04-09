@@ -80,7 +80,7 @@ function pushLineMaterials(materialCounts:Array)
 
 public function onClearLines(lineCount:int):int
 {
-	var deltaScore = pendingScore * lineCount * level * 0.1 * 100;
+	var deltaScore = pendingScore * lineCount * 50 * (1+(Mathf.Pow(level-1,2)*0.05));
 	score += deltaScore;
 	pendingScore = 0;
 	return deltaScore;
