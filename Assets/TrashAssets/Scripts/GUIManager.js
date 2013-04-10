@@ -22,14 +22,18 @@ private var scorePixelPosition:Vector2;
 private var levelPixelPosition:Vector2;
 private var purityPixelPosition:Vector2;
 
-function Start()
-{	
+function Awake()
+{
 	//scorePopupPosition = Vector2(scorePosition.x, scorePosition.y - 25);
 	scorePixelPosition = calcPixelPosition(scorePosition);
 	scorePopupPosition = new Vector2(scorePixelPosition.x, scorePixelPosition.y - Screen.height*.0244);
 
 	levelPixelPosition = new calcPixelPosition(levelPosition);
 	purityPixelPosition = new calcPixelPosition(purityPosition);
+}
+
+function Start()
+{
 }
 
 function Update()

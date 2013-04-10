@@ -7,10 +7,20 @@ public var nextBlockDisplay:NextBlockDisplay;
 public var lineClearParticles:LineClearParticleAffecter;
 public var guiManager:GUIManager;
 
+public var startScreenTexture:Texture;
+//public var 
+
 public var blockTemplates:GameObject[];
 
 public var posOffset:Vector3 = Vector3(-2.76,-6,-0.5);
 public var blockSize:Vector3 = Vector3(0.55, 0.55, 0.55);
+
+//screen positions
+public var startButtonRect:Rect = Rect(.3, .21, .46, .10);
+public var instructionsButtonRect:Rect = Rect(.06, .39, .90, .10);
+public var highscoresButtonRect:Rect = Rect(.09, .57, .84, .10);
+public var creditsButtonRect:Rect = Rect(.26, .75, .54, .10);
+
 
 public var currentScreen:int = 0;
 
@@ -20,14 +30,26 @@ public var startScreen:int = 1;
 public var gameOverScreen:int = 2;
 public var pauseScreen:int = 3;
 
+private var startButtonRectPixels:Rect;
+private var instructionsButtonRectPixels:Rect;
+private var highscoresButtonRectPixels:Rect;
+private var creditsButtonRectPixels:Rect;
+
 //private var curBlocks:Array;
 //private var blockObjects:Array;
 
+function Awake ()
+{
+	startButtonRectPixels = calcPixelPosition(startButtonRect);
+	instructionsButtonRectPixels = calcPixelPosition(instructionsButtonRect);
+	highscoresButtonRectPixels = calcPixelPosition(highscoresButtonRect);
+	creditsButtonRectPixels = calcPixelPosition(creditsButtonRect);
+}
+
 function Start () 
 {
-	//curBlocks = new Array();
-	//blockObjects = new Array();
-	startNewGame(1);
+	setCurrentScreen(startScreen);
+	//startNewGame(1);
 }
 
 function Update () 
@@ -36,20 +58,29 @@ function Update ()
 
 function OnGUI ()
 {
-	if(currentScreen == gameScreen)
+	if(currentScreen == startScreen)
 	{
-		guiManager.draw = true;
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), startScreenTexture);
+		if(GUI.Button(startButtonRectPixels, ""))
+		{
+			setCurrentScreen(gameScreen);
+		}
+		if(GUI.Button(instructionsButtonRectPixels, ""))
+		{
+		}
+		if(GUI.Button(highscoresButtonRectPixels, ""))
+		{
+		}
+		if(GUI.Button(creditsButtonRectPixels, ""))
+		{
+		}
 	}
-	else
-	{
-		guiManager.draw = false;
-	}
-	
+
 	if(currentScreen == gameOverScreen)
 	{
 		//GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), );
 		GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
-		GUI.Label(Rect(100,300,500,100), "Final Score: " + (scoreManager.getScore() * (.6+scoreManager.getPercentPurity())).ToString());
+		GUI.Label(Rect(100,300,500,100), "Final Score: " + (scoreManager.getScore() * (0.6+scoreManager.getPercentPurity())).ToString());
 	}
 
 }
@@ -67,19 +98,11 @@ function gameIsPlaying():boolean
 
 function startNewGame(level:int)
 {
-	//if(gameIsPlaying())
-	//{
-		if(currentScreen == gameScreen || currentScreen == gameOverScreen)
-		{
-			setCurrentScreen(gameScreen);
-
-			screenGrid.onNewGame();
-			nextBlockDisplay.onNewGame();
-			scoreManager.onNewGame(level);
-			guiManager.onNewGame(level);
-			gameManager.startNewGame(level);
-		}
-	//}
+	screenGrid.onNewGame();
+	nextBlockDisplay.onNewGame();
+	scoreManager.onNewGame(level);
+	guiManager.onNewGame(level);
+	gameManager.startNewGame(level);
 }
 
 //direction - 0 = right, 1 = down, 2 = left, 3 = up
@@ -200,5 +223,21 @@ function onLineFinish(lineNum:int, score:int)
 
 function setCurrentScreen(screen:int)
 {
-	currentScreen = screen;	
+	//last screen ending
+
+	currentScreen = screen;
+	guiManager.draw = false;
+
+	//new screen setup
+	if(screen == gameScreen)
+	{
+		startNewGame(1);
+		guiManager.draw = true;
+	}
+
+}
+
+private function calcPixelPosition(rect:Rect)
+{
+	return new Rect(rect.x * Screen.width, rect.y * Screen.height, rect.width * Screen.width, rect.height * Screen.height);
 }
