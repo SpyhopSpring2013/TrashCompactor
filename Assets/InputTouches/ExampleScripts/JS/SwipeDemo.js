@@ -1,5 +1,7 @@
 #pragma strict
 
+public var uiManager:UIManager;
+
 public var cursorIndicator:Transform;
 public var swipeIndicator:Transform;
 public var projectileObject:Transform;
@@ -38,13 +40,15 @@ function OnSwipe(sw:SwipeInfo){
 	var labelText:String="Swipe Detected, ";
 	if(sw.isMouse) labelText+="mouse "+sw.index.ToString()+"\n\n";
 	else labelText+="finger "+sw.index.ToString()+"\n\n";
-	
+
+	/*
 	//labelText+="\n\n";
 	labelText+="direction: "+sw.direction+"\n";
 	labelText+="angle: "+sw.angle.ToString("f1")+"\n";
 	labelText+="speed: "+sw.speed.ToString("f1")+"\n";
 	label.text=labelText;
-	
+	*/
+
 	//if the label is previous cleared, re-initiate the coroutine to clear it
 	if(labelTimer<0){
 		StartCoroutine(ClearLabel());
@@ -59,16 +63,24 @@ function OnSwipe(sw:SwipeInfo){
 	if(sw.angle>315 || sw.angle<45){
 		//Swipe right
 		Debug.Log("right");
+		uiManager.moveCurrentShape(0);
 	}
 
 	if(sw.angle > 135 && sw.angle < 225)
 	{
 		//Swipe left
 		Debug.Log("Left");
+		uiManager.moveCurrentShape(2);
+	}
+	if(sw.angle > 215 && sw.angle < 305)
+	{
+		//Swipe down
+		Debug.Log("Down");
+		uiManager.moveCurrentShape(1);
 	}
 }
 
-function ShowSwipeIndicator(sw:SwipeInfo){
+/*function ShowSwipeIndicator(sw:SwipeInfo){
 	//position the projectile object at the start point of the swipe
 	var p:Vector3=Camera.main.ScreenToWorldPoint(Vector3(sw.startPoint.x, sw.startPoint.y, 5));
 	swipeIndicator.position=p;
@@ -83,10 +95,10 @@ function ShowSwipeIndicator(sw:SwipeInfo){
 		yield;
 	}
 }
-
+*/
 //clear the lable, if no new input has been assigned within 5 sec, the label will be cleared
 function ClearLabel(){
-	labelTimer=5;
+	labelTimer=0;
 	while(labelTimer>0){
 		labelTimer-=Time.deltaTime;
 		yield;
