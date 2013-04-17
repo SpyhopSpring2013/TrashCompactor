@@ -5,6 +5,8 @@ public class TapDemo : MonoBehaviour {
 
 	public ParticleSystem Indicator;
 	
+	public UIManager uiManager;
+
 	public Transform shortTapObj;
 	public Transform longTapObj;
 	public Transform doubleTapObj;
@@ -286,6 +288,7 @@ public class TapDemo : MonoBehaviour {
 				Indicator.startColor=GetRandomColor();
 				//emit a set number of particle
 				Indicator.Emit(30);
+				uiManager.rotateCurrentShapeRight();
 			}
 		}
 	}

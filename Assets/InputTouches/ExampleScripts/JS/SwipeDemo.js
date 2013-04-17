@@ -77,9 +77,9 @@ function OnSwipe(sw:SwipeInfo){
 	if(sw.angle > 215 && sw.angle < 305)
 	{
 		//Swipe down
-		if(sw.speed > 700)
+		if(sw.speed > 1200)
 		{
-			
+			uiManager.dropCurrentShape();
 
 		}
 		uiManager.moveCurrentShape(1);
