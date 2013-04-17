@@ -41,6 +41,8 @@ function OnSwipe(sw:SwipeInfo){
 	if(sw.isMouse) labelText+="mouse "+sw.index.ToString()+"\n\n";
 	else labelText+="finger "+sw.index.ToString()+"\n\n";
 
+	Debug.Log("Speed " + sw.speed);
+	Debug.Log(" Direction X " + sw.direction.x + "Direction Y " + sw.direction.y);
 	/*
 	//labelText+="\n\n";
 	labelText+="direction: "+sw.direction+"\n";
@@ -62,20 +64,24 @@ function OnSwipe(sw:SwipeInfo){
 	Debug.Log(sw.angle);
 	if(sw.angle>315 || sw.angle<45){
 		//Swipe right
-		Debug.Log("right");
+		
 		uiManager.moveCurrentShape(0);
 	}
 
 	if(sw.angle > 135 && sw.angle < 225)
 	{
 		//Swipe left
-		Debug.Log("Left");
+		
 		uiManager.moveCurrentShape(2);
 	}
 	if(sw.angle > 215 && sw.angle < 305)
 	{
 		//Swipe down
-		Debug.Log("Down");
+		if(sw.speed > 700)
+		{
+			
+
+		}
 		uiManager.moveCurrentShape(1);
 	}
 }
