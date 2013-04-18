@@ -8,6 +8,7 @@ public var lineClearParticles:LineClearParticleAffecter;
 public var guiManager:GUIManager;
 
 public var startScreenTexture:Texture;
+public var gameOverScreenTexture:Texture;
 //public var 
 
 public var blockTemplates:GameObject[];
@@ -16,11 +17,14 @@ public var posOffset:Vector3 = Vector3(-2.76,-6,-0.5);
 public var blockSize:Vector3 = Vector3(0.55, 0.55, 0.55);
 
 //screen positions
-public var startButtonRect:Rect = Rect(.3, .21, .46, .10);
+public var startButtonRect:Rect = Rect(.08, .37, .85, .16);
+/*
 public var instructionsButtonRect:Rect = Rect(.06, .39, .90, .10);
 public var highscoresButtonRect:Rect = Rect(.09, .57, .84, .10);
 public var creditsButtonRect:Rect = Rect(.26, .75, .54, .10);
-
+*/
+public var tryAgainButtonRect:Rect = Rect(.1, .8, .3, .1);
+public var gameOverBackButtonRect:Rect = Rect(0.6, 0.8, .3, .1);
 
 public var currentScreen:int = 0;
 
@@ -35,15 +39,22 @@ private var instructionsButtonRectPixels:Rect;
 private var highscoresButtonRectPixels:Rect;
 private var creditsButtonRectPixels:Rect;
 
+
+private var tryAgainButtonRectPixels:Rect;
+private var gameOverBackButtonRectPixels:Rect;
+
 //private var curBlocks:Array;
 //private var blockObjects:Array;
 
 function Awake ()
 {
 	startButtonRectPixels = calcPixelPosition(startButtonRect);
-	instructionsButtonRectPixels = calcPixelPosition(instructionsButtonRect);
+	/*instructionsButtonRectPixels = calcPixelPosition(instructionsButtonRect);
 	highscoresButtonRectPixels = calcPixelPosition(highscoresButtonRect);
 	creditsButtonRectPixels = calcPixelPosition(creditsButtonRect);
+	*/
+	tryAgainButtonRectPixels = calcPixelPosition(tryAgainButtonRect);
+	gameOverBackButtonRectPixels = calcPixelPosition(gameOverBackButtonRect);
 }
 
 function Start () 
@@ -78,9 +89,9 @@ function OnGUI ()
 
 	if(currentScreen == gameOverScreen)
 	{
-		//GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), );
-		GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
-		GUI.Label(Rect(100,300,500,100), "Final Score: " + (scoreManager.getScore() * (0.6+scoreManager.getPercentPurity())).ToString());
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), gameOverScreenTexture);
+		//GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
+		GUI.Label(Rect(100,300,500,100), "Final Score: " + Mathf.Floor(scoreManager.getScore() * (0.6+scoreManager.getPercentPurity())).ToString());
 	}
 
 }
@@ -180,6 +191,11 @@ function onLevelChange(level:int)
 {
 	scoreManager.onLevelChange(level);
 	guiManager.onLevelChange(level);
+}
+
+function onSetGhostShape(xArray:Array, yArray:Array)
+{
+	screenGrid.setGhostShape(xArray, yArray);
 }
 /*
 function createNewShape(numBlocks:int, xVals:int[], yVals:int[])

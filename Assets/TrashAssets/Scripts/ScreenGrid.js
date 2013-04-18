@@ -10,6 +10,8 @@ private var currentObjects:Array; //GameObject
 private var currentGridX:Array; //int
 private var currentGridY:Array; //int
 
+private var ghostObjects:Array; //GameObject
+
 function Start () 
 {
 }
@@ -39,6 +41,16 @@ function onNewGame()
 		{
 			var obj2:GameObject = currentObjects[k];
 			Destroy(obj2);
+		}
+	}
+	if(!ghostObjects)
+	{
+		ghostObjects = new Array();
+		for(var l:int = 0; l<4; l++)
+		{
+			var ghostObj:GameObject = Instantiate(uiManager.blockTemplates[0], Vector3(0,0,uiManager.posOffset.z), Quaternion.identity);
+			ghostObj.transform.localScale = uiManager.blockSize;
+			ghostObjects.Push(ghostObj);
 		}
 	}
 	gridObjects = new Array();
@@ -137,5 +149,18 @@ function clearLine(row:int)
 				block.transform.position.y -= uiManager.blockSize.y;
 			}
 		}
+	}
+}
+
+function setGhostShape(xArray:Array, yArray:Array)
+{
+	for(var i:int = 0; i<xArray.length; i++)
+	{
+		var curX:int = xArray[i];
+		var curY:int = yArray[i];
+		var obj:GameObject = ghostObjects[i];
+		obj.transform.position = Vector3(uiManager.posOffset.x + uiManager.blockSize.x/2 + curX*uiManager.blockSize.x, 
+										 uiManager.posOffset.y + uiManager.blockSize.y/2 + curY*uiManager.blockSize.y, 
+										 uiManager.posOffset.z);
 	}
 }

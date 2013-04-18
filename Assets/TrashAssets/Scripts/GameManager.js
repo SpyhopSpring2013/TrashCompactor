@@ -23,6 +23,8 @@ private var canMoveDownLast:boolean;
 private var gameLevel:int;
 private var linesCleared:int;
 
+private var ghostShape:GridShape;
+
 //private var lineBonus:int;
 
 
@@ -85,6 +87,8 @@ function Update ()
 function startNewGame(level:int):void
 {
 	gridTiles = new Array();
+	ghostShape = new GridShape(0,0,0,0,0);
+
 	//24 rows
 	for(var i:int = 0; i < kMaxRows; i++)
 	{
@@ -365,7 +369,10 @@ function moveShape(shape:GridShape,x:int, y:int):boolean
 	}
 	shape.m_x = x;
 	shape.m_y = y;
-	uiManager.onMoveCurrentShape(xVals, yVals);
+	if(shape == currentShape)
+		uiManager.onMoveCurrentShape(xVals, yVals);
+
+	setGhostShape(shape);
 	//check if locktimer should be enabled
 	/*
 	if(isMovementPossible(shape,shape.m_x, shape.m_y-1, shape.m_rotation))
@@ -508,8 +515,10 @@ function setShapeRotation(shape:GridShape, rotation:int):boolean
 
 	//successful move
 	shapeCoords = getShapeGridCoord(shape);
+	setGhostShape(shape);
 
-	uiManager.onMoveCurrentShape(shapeCoords[0], shapeCoords[1]);
+	if(shape == currentShape)
+		uiManager.onMoveCurrentShape(shapeCoords[0], shapeCoords[1]);
 	return true;
 }
 
@@ -563,6 +572,7 @@ function addNextGridShape()
 	nextShapes.RemoveAt(0);
 	var shape:GridShape = new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18);
 	nextShapes.Push(shape);
+	setGhostShape(currentShape);
 	var blockCoord:Array = getShapeBlockCoord(shape.m_shape, shape.m_rotation);
 	var xArray:Array = blockCoord[0];
 	var yArray:Array = blockCoord[1];
@@ -588,4 +598,23 @@ function dropShape(shape:GridShape):boolean
 	}
 	placeShape(shape);
 	addNextGridShape();
+}
+
+function setGhostShape(shape:GridShape)
+{
+	ghostShape.m_shape = shape.m_shape;
+	ghostShape.m_material = shape.m_material;
+	ghostShape.m_rotation = shape.m_rotation;
+	ghostShape.m_x = shape.m_x;
+	ghostShape.m_y = shape.m_y;
+
+	while(moveShape(ghostShape, ghostShape.m_x, ghostShape.m_y-1))
+	{
+	}
+
+	var blockCoord:Array = getShapeGridCoord(ghostShape);
+	var xArray:Array = blockCoord[0];
+	var yArray:Array = blockCoord[1];
+	uiManager.onSetGhostShape(xArray, yArray);
+
 }

@@ -51,6 +51,7 @@ function Update ()
 					keyPressedRefireTimer[2] = 0.0;
 				}
 			}
+			/*
 			if(keyPressedRefireTimer[3] >= keyPressedRefireDelay[3])
 			{
 				if(Input.GetKey(KeyCode.UpArrow))
@@ -59,6 +60,7 @@ function Update ()
 					keyPressedRefireTimer[3] = 0.0;
 				}
 			}
+			*/
 			/*
 			if(Input.GetKeyDown(KeyCode.RightArrow))
 			{
