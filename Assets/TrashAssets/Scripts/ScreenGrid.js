@@ -43,14 +43,12 @@ function onNewGame()
 			Destroy(obj2);
 		}
 	}
-	if(!ghostObjects)
+	if(ghostObjects)
 	{
-		ghostObjects = new Array();
-		for(var l:int = 0; l<4; l++)
+		for(var l:int = 0; l<ghostObjects.length; l++)
 		{
-			var ghostObj:GameObject = Instantiate(uiManager.blockTemplates[0], Vector3(0,0,uiManager.posOffset.z), Quaternion.identity);
-			ghostObj.transform.localScale = uiManager.blockSize;
-			ghostObjects.Push(ghostObj);
+			var obj3:GameObject = ghostObjects[l];
+			Destroy(obj3);
 		}
 	}
 	gridObjects = new Array();
@@ -61,6 +59,7 @@ function onNewGame()
 	currentObjects = new Array();
 	currentGridX = new Array();
 	currentGridY = new Array();
+	ghostObjects = new Array();
 }
 
 function pushEmptyLine()
@@ -124,6 +123,16 @@ function placeCurrentShape()
 	currentObjects.Clear();
 	currentGridX.Clear();
 	currentGridY.Clear();
+
+	//clear ghost shape
+	if(ghostObjects.length > 0)
+	{
+		for(var obj:GameObject in ghostObjects)
+		{
+			Destroy(obj);
+		}
+		ghostObjects.Clear();
+	}
 }
 
 function clearLine(row:int)
@@ -152,7 +161,28 @@ function clearLine(row:int)
 	}
 }
 
-function setGhostShape(xArray:Array, yArray:Array)
+function newGhostShape(xVals:Array, yVals:Array, material:int)
+{
+	if(ghostObjects.length > 0)
+		ghostObjects.Clear();
+
+	for(var i:int = 0; i<xVals.length; i++)
+	{
+		var curX:int = xVals[i];
+		var curY:int = yVals[i];
+		var obj:GameObject = Instantiate(uiManager.blockTemplates[material], 
+								Vector3(uiManager.posOffset.x + uiManager.blockSize.x/2 + curX*uiManager.blockSize.x, 
+									    uiManager.posOffset.y + uiManager.blockSize.y/2 + curY*uiManager.blockSize.y, 
+									    uiManager.posOffset.z), 
+								Quaternion.identity);
+		obj.transform.localScale = uiManager.blockSize;
+		for(var child:Transform in obj.transform)
+			child.renderer.material.color.a = 0.35;
+		ghostObjects.Push(obj);
+	}
+}
+
+function moveGhostShape(xArray:Array, yArray:Array)
 {
 	for(var i:int = 0; i<xArray.length; i++)
 	{

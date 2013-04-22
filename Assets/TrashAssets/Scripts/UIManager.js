@@ -193,9 +193,14 @@ function onLevelChange(level:int)
 	guiManager.onLevelChange(level);
 }
 
-function onSetGhostShape(xArray:Array, yArray:Array)
+function onNewGhostShape(xArray:Array, yArray:Array, material:int)
 {
-	screenGrid.setGhostShape(xArray, yArray);
+	screenGrid.newGhostShape(xArray, yArray, material);
+}
+
+function onMoveGhostShape(xArray:Array, yArray:Array)
+{
+	screenGrid.moveGhostShape(xArray, yArray);
 }
 /*
 function createNewShape(numBlocks:int, xVals:int[], yVals:int[])

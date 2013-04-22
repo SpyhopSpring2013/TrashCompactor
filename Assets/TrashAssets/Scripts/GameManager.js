@@ -372,7 +372,7 @@ function moveShape(shape:GridShape,x:int, y:int):boolean
 	if(shape == currentShape)
 		uiManager.onMoveCurrentShape(xVals, yVals);
 
-	setGhostShape(shape);
+	moveGhostShape(shape);
 	//check if locktimer should be enabled
 	/*
 	if(isMovementPossible(shape,shape.m_x, shape.m_y-1, shape.m_rotation))
@@ -515,7 +515,7 @@ function setShapeRotation(shape:GridShape, rotation:int):boolean
 
 	//successful move
 	shapeCoords = getShapeGridCoord(shape);
-	setGhostShape(shape);
+	moveGhostShape(shape);
 
 	if(shape == currentShape)
 		uiManager.onMoveCurrentShape(shapeCoords[0], shapeCoords[1]);
@@ -572,7 +572,7 @@ function addNextGridShape()
 	nextShapes.RemoveAt(0);
 	var shape:GridShape = new GridShape(Random.Range(0,7),Random.Range(1,4),0,2,18);
 	nextShapes.Push(shape);
-	setGhostShape(currentShape);
+	newGhostShape(currentShape);
 	var blockCoord:Array = getShapeBlockCoord(shape.m_shape, shape.m_rotation);
 	var xArray:Array = blockCoord[0];
 	var yArray:Array = blockCoord[1];
@@ -600,13 +600,30 @@ function dropShape(shape:GridShape):boolean
 	addNextGridShape();
 }
 
-function setGhostShape(shape:GridShape)
+function newGhostShape(shape:GridShape)
 {
 	ghostShape.m_shape = shape.m_shape;
 	ghostShape.m_material = shape.m_material;
 	ghostShape.m_rotation = shape.m_rotation;
 	ghostShape.m_x = shape.m_x;
 	ghostShape.m_y = shape.m_y;
+
+
+	var blockCoord:Array = getShapeGridCoord(ghostShape);
+	var xArray:Array = blockCoord[0];
+	var yArray:Array = blockCoord[1];
+	uiManager.onNewGhostShape(xArray, yArray, ghostShape.m_material);
+
+	moveGhostShape(ghostShape);
+
+
+}
+
+function moveGhostShape(shape:GridShape)
+{
+	ghostShape.m_x = shape.m_x;
+	ghostShape.m_y = shape.m_y;
+	ghostShape.m_rotation = shape.m_rotation;
 
 	while(moveShape(ghostShape, ghostShape.m_x, ghostShape.m_y-1))
 	{
@@ -615,6 +632,6 @@ function setGhostShape(shape:GridShape)
 	var blockCoord:Array = getShapeGridCoord(ghostShape);
 	var xArray:Array = blockCoord[0];
 	var yArray:Array = blockCoord[1];
-	uiManager.onSetGhostShape(xArray, yArray);
+	uiManager.onMoveGhostShape(xArray, yArray);
 
 }
