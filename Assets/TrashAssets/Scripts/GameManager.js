@@ -64,7 +64,7 @@ function Update ()
 		lockTimer = 0.0;
 	}
 	*/
-	if(uiManager.currentScreen == uiManager.gameScreen)
+	if(uiManager.gameIsPlaying())
 	{
 		scoreManager.playTime += Time.deltaTime;
 		currentShapeMoveTimer += Time.deltaTime;

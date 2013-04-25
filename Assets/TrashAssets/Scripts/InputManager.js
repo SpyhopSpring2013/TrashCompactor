@@ -91,6 +91,10 @@ function Update ()
 			{
 				uiManager.rotateCurrentShapeLeft();
 			}
+			else if(Input.GetKeyDown(KeyCode.UpArrow))
+			{
+				uiManager.rotateCurrentShapeRight();
+			}
 			else if(Input.GetKeyDown(KeyCode.Space))
 			{
 				uiManager.dropCurrentShape();

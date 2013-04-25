@@ -100,3 +100,28 @@ public function getPercentPurity():float
 {
 	return percentPurity;
 }
+
+public function getGlassBlocksCleared():int
+{
+	return glassBlocksCleared;
+}
+
+public function getPaperBlocksCleared():int
+{
+	return paperBlocksCleared;
+}
+
+public function getPlasticBlocksCleared():int
+{
+	return plasticBlocksCleared;
+}
+
+public function getLinesCleared():int
+{
+	return linesCleared;
+}
+
+public function getLevel():int
+{
+	return level;
+}
