@@ -44,6 +44,7 @@ function onNewGame(level:int)
 {
 	score = 0;
 	popupFadeTextArray = new Array();
+	purity = 1.0;
 }
 
 function OnGUI()

@@ -79,6 +79,12 @@ function Update ()
 				uiManager.moveCurrentShape(3);
 			}
 			*/
+			if(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+			{
+				for(var j:int = 0; j< 4; j++)
+					keyPressedRefireTimer[j] = keyPressedRefireDelay[j];
+			}
+
 			if(Input.GetKeyDown(KeyCode.R))
 			{
 				uiManager.startNewGame(1);

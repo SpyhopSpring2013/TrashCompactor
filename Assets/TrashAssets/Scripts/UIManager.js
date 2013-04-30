@@ -79,6 +79,7 @@ function Update ()
 
 function OnGUI ()
 {
+	var cameraAudioSource:AudioSource;
 	if(currentScreen == startScreen)
 	{
 		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), startScreenTexture);
@@ -86,6 +87,9 @@ function OnGUI ()
 		{
 			setCurrentScreen(gameScreen);
 			startNewGame(1);
+			cameraAudioSource = Camera.main.GetComponent(AudioSource);
+			cameraAudioSource.clip = music[2];
+			cameraAudioSource.Play();
 		}
 		/*
 		if(GUI.Button(instructionsButtonRectPixels, ""))
@@ -132,7 +136,8 @@ function OnGUI ()
 		//GUI.Label(Rect(100,230,500,100), "Line Purity: " + (scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");
 		GUI.Label(Rect(100,310,500,100), "Lines Cleared: " + scoreManager.getLinesCleared().ToString());
 		GUI.Label(Rect(100,330,500,100), "Final Level: " + scoreManager.getLevel().ToString());
-		GUI.Label(Rect(100,350,500,100), "Play Time: " + String.Format("{0:00}:{1:00}:{2:00}",(Mathf.Floor(scoreManager.playTime)/60),
+		GUI.Label(Rect(100,350,500,100), "Play Time: " + String.Format("{0:00}:{1:00}:{2:00}:{3:00}",(Mathf.Floor(scoreManager.playTime)/3600),
+																								(Mathf.Floor(scoreManager.playTime)/60),
 																							  (Mathf.Floor(scoreManager.playTime)%60),
 																 ((scoreManager.playTime - Mathf.Floor(scoreManager.playTime))*100)));
 			/*(Mathf.Floor(scoreManager.playTime)/60).ToString("F0") + ":" +
@@ -143,6 +148,14 @@ function OnGUI ()
 		GUI.Label(Rect(100,390,500,100), "Paper Blocks Cleared: " + scoreManager.getPaperBlocksCleared().ToString());
 		GUI.Label(Rect(100,410,500,100), "Plastic Blocks Cleared: " + scoreManager.getPlasticBlocksCleared().ToString());
 
+		if(GUI.Button(tryAgainButtonRectPixels, "Try again"))
+		{
+			setCurrentScreen(gameScreen);
+			startNewGame(1);
+			cameraAudioSource = Camera.main.GetComponent(AudioSource);
+			cameraAudioSource.clip = music[2];
+			cameraAudioSource.Play();
+		}
 	}
 
 }
@@ -192,6 +205,7 @@ function dropCurrentShape()
 	if(gameManager.playerHasControl())
 	{
 		gameManager.dropCurrentShape();
+		Camera.main.GetComponent(AudioSource).PlayOneShot(dropBlockSounds[Random.Range(0,dropBlockSounds.length-1)], .4);
 	}
 }
 
@@ -221,6 +235,7 @@ function onClearLine(row:int, style:int)
 	screenGrid.clearLine(row);
 	lineClearParticles.onClearLine(row,style);
 	guiManager.onPurityChange(scoreManager.getPercentPurity());
+	Camera.main.GetComponent(AudioSource).PlayOneShot(lineClearSounds[Random.Range(0,lineClearSounds.length-1)]);
 }
 
 function onNewNextShape(xVals:Array, yVals:Array, materials:Array)
@@ -295,15 +310,25 @@ function onLineFinish(lineNum:int, score:int)
 
 function setCurrentScreen(screen:int)
 {
+	var cameraAudioSource:AudioSource = Camera.main.GetComponent(AudioSource);
 	//last screen ending
 
 	currentScreen = screen;
 	guiManager.draw = false;
 
 	//new screen setup
+	if(screen == startScreen)
+	{
+		cameraAudioSource.clip = music[0];
+		cameraAudioSource.Play();
+	}
 	if(screen == gameScreen)
 	{
 		guiManager.draw = true;
+	}
+	if(screen == gameOverScreen)
+	{
+		//cameraAudioSource.PlayOneShot()
 	}
 
 }

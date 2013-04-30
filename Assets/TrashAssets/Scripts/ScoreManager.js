@@ -28,7 +28,7 @@ function onNewGame(lLevel:int)
 	plasticBlocksCleared = 0;
 	linesCleared = 0;
 	level = lLevel;
-	percentPurity = 0.0;
+	percentPurity = 1.0;
 	playTime = 0.0;
 	score = 0;
 }
