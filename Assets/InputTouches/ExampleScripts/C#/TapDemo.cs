@@ -5,8 +5,9 @@ public class TapDemo : MonoBehaviour {
 
 	public ParticleSystem Indicator;
 	
-	public UIManager uiManager;
-
+	//public UIManager uiManager;
+	
+	
 	public Transform shortTapObj;
 	public Transform longTapObj;
 	public Transform doubleTapObj;
@@ -255,7 +256,7 @@ public class TapDemo : MonoBehaviour {
 	
 
 	private bool instruction=false;
-	void OnGUI(){
+	/*void OnGUI(){
 		if(!instruction){
 			if(GUI.Button(new Rect(10, 55, 130, 35), "Instruction On")){
 				instruction=true;
@@ -270,7 +271,7 @@ public class TapDemo : MonoBehaviour {
 			
 			GUI.Label(new Rect(15, 105, 190, 65), "interact with each object using the interaction stated on top of each of them");
 		}
-	}
+	}*/
 	
 	
 	//************************************************************************************************//
@@ -288,7 +289,7 @@ public class TapDemo : MonoBehaviour {
 				Indicator.startColor=GetRandomColor();
 				//emit a set number of particle
 				Indicator.Emit(30);
-				uiManager.rotateCurrentShapeRight();
+				//uiManager.rotateCurrentShapeRight();
 			}
 		}
 	}
