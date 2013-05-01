@@ -8,6 +8,7 @@ public var lineClearParticles:LineClearParticleAffecter;
 public var guiManager:GUIManager;
 
 public var startScreenTexture:Texture;
+public var instructionsScreenTextures:Texture[];
 public var gameOverScreenTexture:Texture;
 public var pauseButtonTexture:Texture;
 
@@ -28,6 +29,8 @@ public var instructionsButtonRect:Rect = Rect(.06, .39, .90, .10);
 public var highscoresButtonRect:Rect = Rect(.09, .57, .84, .10);
 public var creditsButtonRect:Rect = Rect(.26, .75, .54, .10);
 */
+public var instructionsNextButtonRect = Rect(.85, .85, .95, .95);
+
 public var tryAgainButtonRect:Rect = Rect(.1, .8, .3, .1);
 public var gameOverBackButtonRect:Rect = Rect(0.6, 0.8, .3, .1);
 
@@ -40,17 +43,21 @@ public var gameScreen:int = 0;
 public var startScreen:int = 1;
 public var gameOverScreen:int = 2;
 public var pauseScreen:int = 3;
+public var instructionsScreen:int = 4;
 
 private var startButtonRectPixels:Rect;
 private var instructionsButtonRectPixels:Rect;
 private var highscoresButtonRectPixels:Rect;
 private var creditsButtonRectPixels:Rect;
 
+private var instructionsNextButtonRectPixels:Rect;
 
 private var tryAgainButtonRectPixels:Rect;
 private var gameOverBackButtonRectPixels:Rect;
 
 private var pauseButtonRectPixels:Rect;
+
+private var instructionsIndex:int = 0;
 
 //private var curBlocks:Array;
 //private var blockObjects:Array;
@@ -62,6 +69,7 @@ function Awake ()
 	highscoresButtonRectPixels = calcPixelPosition(highscoresButtonRect);
 	creditsButtonRectPixels = calcPixelPosition(creditsButtonRect);
 	*/
+	instructionsNextButtonRectPixels = calcPixelPosition(instructionsNextButtonRect);
 	tryAgainButtonRectPixels = calcPixelPosition(tryAgainButtonRect);
 	gameOverBackButtonRectPixels = calcPixelPosition(gameOverBackButtonRect);
 	pauseButtonRectPixels = calcPixelPosition(pauseButtonRect);
@@ -79,17 +87,13 @@ function Update ()
 
 function OnGUI ()
 {
-	var cameraAudioSource:AudioSource;
 	if(currentScreen == startScreen)
 	{
 		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), startScreenTexture);
 		if(GUI.Button(startButtonRectPixels, ""))
 		{
-			setCurrentScreen(gameScreen);
-			startNewGame(1);
-			cameraAudioSource = Camera.main.GetComponent(AudioSource);
-			cameraAudioSource.clip = music[2];
-			cameraAudioSource.Play();
+			setCurrentScreen(instructionsScreen);
+			
 		}
 		/*
 		if(GUI.Button(instructionsButtonRectPixels, ""))
@@ -102,6 +106,20 @@ function OnGUI ()
 		{
 		}
 		*/
+	}
+
+	if(currentScreen == instructionsScreen)
+	{
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), instructionsScreenTextures[instructionsIndex]);
+		if(GUI.Button(instructionsNextButtonRectPixels, ""))
+		{
+			instructionsIndex++;
+		}
+		if(instructionsIndex >= instructionsScreenTextures.length)
+		{
+			setCurrentScreen(gameScreen);
+			startNewGame(1);
+		}
 	}
 
 	if(currentScreen == gameScreen)
@@ -152,9 +170,6 @@ function OnGUI ()
 		{
 			setCurrentScreen(gameScreen);
 			startNewGame(1);
-			cameraAudioSource = Camera.main.GetComponent(AudioSource);
-			cameraAudioSource.clip = music[2];
-			cameraAudioSource.Play();
 		}
 	}
 
@@ -178,6 +193,10 @@ function startNewGame(level:int)
 	scoreManager.onNewGame(level);
 	guiManager.onNewGame(level);
 	gameManager.startNewGame(level);
+	//play music
+	var cameraAudioSource:AudioSource = Camera.main.GetComponent(AudioSource);
+	cameraAudioSource.clip = music[2];
+	cameraAudioSource.Play();
 }
 
 //direction - 0 = right, 1 = down, 2 = left, 3 = up
@@ -329,6 +348,11 @@ function setCurrentScreen(screen:int)
 	if(screen == gameOverScreen)
 	{
 		//cameraAudioSource.PlayOneShot()
+	}
+
+	if(screen == instructionsScreen)
+	{
+		instructionsIndex = 0;
 	}
 
 }
