@@ -9,8 +9,11 @@ public var guiManager:GUIManager;
 
 public var startScreenTexture:Texture;
 public var instructionsScreenTextures:Texture[];
+public var pauseScreenTexture:Texture;
 public var gameOverScreenTexture:Texture;
 public var pauseButtonTexture:Texture;
+
+public var guiSkins:GUISkin[];
 
 public var music:AudioClip[];
 public var lineClearSounds:AudioClip[];
@@ -19,22 +22,19 @@ public var dropBlockSounds:AudioClip[];
 
 public var blockTemplates:GameObject[];
 
-public var posOffset:Vector3 = Vector3(-2.76,-6,-0.5);
-public var blockSize:Vector3 = Vector3(0.55, 0.55, 0.55);
+public var posOffset:Vector3;
+public var blockSize:Vector3;
 
 //screen positions
-public var startButtonRect:Rect = Rect(.08, .37, .85, .16);
-/*
-public var instructionsButtonRect:Rect = Rect(.06, .39, .90, .10);
-public var highscoresButtonRect:Rect = Rect(.09, .57, .84, .10);
-public var creditsButtonRect:Rect = Rect(.26, .75, .54, .10);
-*/
-public var instructionsNextButtonRect = Rect(.85, .85, .95, .95);
+public var startButtonRect:Rect;
+public var instructionsNextButtonRect:Rect;
 
-public var tryAgainButtonRect:Rect = Rect(.1, .8, .3, .1);
-public var gameOverBackButtonRect:Rect = Rect(0.6, 0.8, .3, .1);
+public var tryAgainButtonRect:Rect;
+public var gameOverBackButtonRect:Rect;
 
-public var pauseButtonRect:Rect = Rect(0.93,0.02,0.05,0.05);
+public var pauseButtonRect:Rect;
+public var resumeButtonRect:Rect;
+public var pauseRestartButtonRect:Rect;
 
 public var currentScreen:int = 0;
 
@@ -56,6 +56,8 @@ private var tryAgainButtonRectPixels:Rect;
 private var gameOverBackButtonRectPixels:Rect;
 
 private var pauseButtonRectPixels:Rect;
+public var resumeButtonRectPixels:Rect;
+public var pauseRestartButtonRectPixels:Rect;
 
 private var instructionsIndex:int = 0;
 
@@ -73,6 +75,8 @@ function Awake ()
 	tryAgainButtonRectPixels = calcPixelPosition(tryAgainButtonRect);
 	gameOverBackButtonRectPixels = calcPixelPosition(gameOverBackButtonRect);
 	pauseButtonRectPixels = calcPixelPosition(pauseButtonRect);
+	resumeButtonRectPixels = calcPixelPosition(resumeButtonRect);
+	pauseRestartButtonRectPixels = calcPixelPosition(pauseRestartButtonRect);
 }
 
 function Start () 
@@ -90,7 +94,7 @@ function OnGUI ()
 	if(currentScreen == startScreen)
 	{
 		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), startScreenTexture);
-		if(GUI.Button(startButtonRectPixels, ""))
+		if(GUI.Button(startButtonRectPixels, "", guiSkins[0].button))
 		{
 			setCurrentScreen(instructionsScreen);
 			
@@ -111,7 +115,7 @@ function OnGUI ()
 	if(currentScreen == instructionsScreen)
 	{
 		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), instructionsScreenTextures[instructionsIndex]);
-		if(GUI.Button(instructionsNextButtonRectPixels, ""))
+		if(GUI.Button(instructionsNextButtonRectPixels, "Next", guiSkins[1].button))
 		{
 			instructionsIndex++;
 		}
@@ -125,7 +129,7 @@ function OnGUI ()
 	if(currentScreen == gameScreen)
 	{
 		//pause button
-		if(GUI.Button(pauseButtonRectPixels,pauseButtonTexture))
+		if(GUI.Button(pauseButtonRectPixels,pauseButtonTexture, guiSkins[2].button))
 		{
 			setCurrentScreen(pauseScreen);
 		}
@@ -134,37 +138,46 @@ function OnGUI ()
 
 	if(currentScreen == pauseScreen)
 	{
-		if(GUI.Button(Rect(200,200,200,200),"Resume"))
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), pauseScreenTexture);
+		if(GUI.Button(resumeButtonRectPixels,"", guiSkins[3].button))
 		{
 			setCurrentScreen(gameScreen);
+		}
+		if(GUI.Button(pauseRestartButtonRectPixels, "", guiSkins[3].button))
+		{
+			setCurrentScreen(gameScreen);
+			startNewGame(1);
 		}
 	}
 
 	if(currentScreen == gameOverScreen)
 	{
+		GUI.skin = guiSkins[4];
 		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), gameOverScreenTexture);
-		//GUI.Label(Rect(200,200, 200, 200), "GAME OVER");
 		GUI.Label(Rect(50,200,500,100), "Final Score:");
-		GUI.Label(Rect(150,200,500,100), scoreManager.getScore().ToString());
 		GUI.Label(Rect(170,220,500,100), "+");
 		GUI.Label(Rect(50,240,500,100), "Line Purity:");
-		GUI.Label(Rect(150,240,500,100), (1+scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");
 		GUI.Label(Rect(170,260,500,100), "=");
-		GUI.Label(Rect(150,280,500,100), Mathf.Floor(scoreManager.getScore() * (0.6+scoreManager.getPercentPurity())).ToString());
-		//GUI.Label(Rect(100,230,500,100), "Line Purity: " + (scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");
-		GUI.Label(Rect(100,310,500,100), "Lines Cleared: " + scoreManager.getLinesCleared().ToString());
-		GUI.Label(Rect(100,330,500,100), "Final Level: " + scoreManager.getLevel().ToString());
-		GUI.Label(Rect(100,350,500,100), "Play Time: " + String.Format("{0:00}:{1:00}:{2:00}:{3:00}",(Mathf.Floor(scoreManager.playTime)/3600),
+		GUI.Label(Rect(100,310,500,100), "Lines Cleared:");
+		GUI.Label(Rect(100,330,500,100), "Final Level:");
+		GUI.Label(Rect(100,350,500,100), "Play Time:");
+		GUI.Label(Rect(100,370,500,100), "Glass Blocks Cleared:");
+		GUI.Label(Rect(100,390,500,100), "Paper Blocks Cleared:");
+		GUI.Label(Rect(100,410,500,100), "Plastic Blocks Cleared:");
+
+		GUI.skin = guiSkins[5];
+		GUI.Label(Rect(150,200,500,100), scoreManager.getScore().ToString());															//score
+		GUI.Label(Rect(150,240,500,100), (1+scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");								//Purity
+		GUI.Label(Rect(150,280,500,100), Mathf.Floor(scoreManager.getScore() * (0.6+scoreManager.getPercentPurity())).ToString());		//total score
+		GUI.Label(Rect(150,310,500,100), scoreManager.getLinesCleared().ToString());													//lines cleared
+		GUI.Label(Rect(150,330,500,100), scoreManager.getLevel().ToString());															//level
+		GUI.Label(Rect(150,350,500,100), String.Format("{0:00}:{1:00}:{2:00}:{3:00}",(Mathf.Floor(scoreManager.playTime)/3600),			//time
 																								(Mathf.Floor(scoreManager.playTime)/60),
 																							  (Mathf.Floor(scoreManager.playTime)%60),
 																 ((scoreManager.playTime - Mathf.Floor(scoreManager.playTime))*100)));
-			/*(Mathf.Floor(scoreManager.playTime)/60).ToString("F0") + ":" +
-														 (Mathf.Floor(scoreManager.playTime)%60).ToString() + ":" +
-														 ((scoreManager.playTime - Mathf.Floor(scoreManager.playTime))*100).ToString("F0"));
-			*/
-		GUI.Label(Rect(100,370,500,100), "Glass Blocks Cleared: " + scoreManager.getGlassBlocksCleared().ToString());
-		GUI.Label(Rect(100,390,500,100), "Paper Blocks Cleared: " + scoreManager.getPaperBlocksCleared().ToString());
-		GUI.Label(Rect(100,410,500,100), "Plastic Blocks Cleared: " + scoreManager.getPlasticBlocksCleared().ToString());
+		GUI.Label(Rect(150,370,500,100), scoreManager.getGlassBlocksCleared().ToString());												//glass
+		GUI.Label(Rect(150,390,500,100), scoreManager.getPaperBlocksCleared().ToString());												//paper
+		GUI.Label(Rect(150,410,500,100), scoreManager.getPlasticBlocksCleared().ToString());											//plastic
 
 		if(GUI.Button(tryAgainButtonRectPixels, "Try again"))
 		{
@@ -357,7 +370,7 @@ function setCurrentScreen(screen:int)
 
 }
 
-private function calcPixelPosition(rect:Rect)
+static public function calcPixelPosition(rect:Rect)
 {
 	return new Rect(rect.x * Screen.width, rect.y * Screen.height, rect.width * Screen.width, rect.height * Screen.height);
 }

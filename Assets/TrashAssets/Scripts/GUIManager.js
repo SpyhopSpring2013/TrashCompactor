@@ -1,12 +1,11 @@
 public var particleAffecter: LineClearParticleAffecter;
 
+public var guiSkins:GUISkin[];
+
 public var debug = false;
 public var draw:boolean = false;
 
-var scoreGUISkin: GUISkin;
 private var score:int;
-
-private var scorePopupPosition:Vector2;
 
 private var popupFadeTextArray:Array;
 
@@ -14,22 +13,33 @@ private var level:int;
 private var purity:float;
 
 //POSITIONS ARE DEFINED AS PERCENT OF SCREEN WIDTH/HEIGHT
-public var scorePosition:Vector2;
-public var levelPosition:Vector2;
-public var purityPosition:Vector2;
 
-private var scorePixelPosition:Vector2;
-private var levelPixelPosition:Vector2;
-private var purityPixelPosition:Vector2;
+public var scoreTextRect:Rect;
+public var scoreRect:Rect;
+public var levelTextRect:Rect;
+public var levelRect:Rect;
+public var purityTextRect:Rect;
+public var purityRect:Rect;
+
+private var scoreTextRectPixels:Rect;
+private var scoreRectPixels:Rect;
+private var levelTextRectPixels:Rect;
+private var levelRectPixels:Rect;
+private var purityTextRectPixels:Rect;
+private var purityRectPixels:Rect;
+
+private var scorePopupPosition:Vector2;
 
 function Awake()
 {
-	//scorePopupPosition = Vector2(scorePosition.x, scorePosition.y - 25);
-	scorePixelPosition = calcPixelPosition(scorePosition);
-	scorePopupPosition = Vector2(scorePixelPosition.x, scorePixelPosition.y - Screen.height*.0244);
+	scoreTextRectPixels = UIManager.calcPixelPosition(scoreTextRect);
+	scoreRectPixels = UIManager.calcPixelPosition(scoreRect);
+	levelTextRectPixels = UIManager.calcPixelPosition(levelTextRect);
+	levelRectPixels = UIManager.calcPixelPosition(levelRect);
+	purityTextRectPixels = UIManager.calcPixelPosition(purityTextRect);
+	purityRectPixels = UIManager.calcPixelPosition(purityRect);
 
-	levelPixelPosition = calcPixelPosition(levelPosition);
-	purityPixelPosition = calcPixelPosition(purityPosition);
+	scorePopupPosition = Vector2(scoreRectPixels.x, scoreRectPixels.y - Screen.height*.0244);
 }
 
 function Start()
@@ -51,7 +61,6 @@ function OnGUI()
 {
 	if(draw)
 	{
-		GUI.skin = scoreGUISkin;
 		//GUI.skin.label.fontSize = 30;
 
 		if(debug)
@@ -86,12 +95,16 @@ function OnGUI()
 				continue;
 			}
 			fadeText.update(Time.deltaTime);
-			fadeText.draw();
+			fadeText.draw(guiSkins[1]);
 		}
+		//score labels text
+		GUI.Label(scoreTextRectPixels, "Score:", guiSkins[0].label);
+		GUI.Label(levelTextRectPixels, "Level:", guiSkins[0].label);
+		GUI.Label(purityTextRectPixels, "Purity:", guiSkins[0].label);
 		//score text
-		GUI.Label(Rect(scorePixelPosition.x, scorePixelPosition.y, 600,100), score.ToString());
-		GUI.Label(Rect(levelPixelPosition.x, levelPixelPosition.y, 600,100), level.ToString());
-		GUI.Label(Rect(purityPixelPosition.x, purityPixelPosition.y, 600,100), (purity*100.0).ToString("F2") + "%");
+		GUI.Label(scoreRectPixels, score.ToString(), guiSkins[1].label);
+		GUI.Label(levelRectPixels, level.ToString(), guiSkins[1].label);
+		GUI.Label(purityRectPixels, (purity*100.0).ToString("F2") + "%", guiSkins[1].label);
 	}
 
 }
@@ -100,18 +113,13 @@ function addScore(deltaScore:int)
 {
 	score += deltaScore;
 	var fadeText:PopupFadeText = new PopupFadeText(scorePopupPosition, "+" + deltaScore.ToString());
-	fadeText.m_fontSize = scoreGUISkin.label.fontSize * 0.8;
+	fadeText.m_fontSize = guiSkins[1].label.fontSize * 0.8;
 	popupFadeTextArray.Push(fadeText);
 }
 
 public function onLevelChange(nLevel:int)
 {
 	level = nLevel;
-}
-
-private function calcPixelPosition(pos:Vector2)
-{
-	return new Vector2(pos.x * Screen.width, pos.y * Screen.height);
 }
 
 public function onPurityChange(nPurity:float)

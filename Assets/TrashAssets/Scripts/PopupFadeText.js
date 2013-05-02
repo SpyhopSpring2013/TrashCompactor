@@ -57,6 +57,16 @@ class PopupFadeText
 		m_timer += deltaTime;
 	}
 
+	public function draw(skin:GUISkin)
+	{
+		GUI.color.a = m_alpha;
+		var oldSize:int = GUI.skin.label.fontSize;
+		GUI.skin.label.fontSize = m_fontSize;
+		GUI.Label(Rect(m_position.x, m_position.y, m_width, m_height), m_text, skin.label);
+		GUI.skin.label.fontSize = oldSize;
+		GUI.color.a = 1.0;
+	}
+
 	public function draw():void
 	{
 		GUI.color.a = m_alpha;
