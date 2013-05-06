@@ -36,6 +36,8 @@ public var pauseButtonRect:Rect;
 public var resumeButtonRect:Rect;
 public var pauseRestartButtonRect:Rect;
 
+public var gameOverTextRects:Rect[];
+
 public var currentScreen:int = 0;
 
 //screen vars
@@ -56,8 +58,10 @@ private var tryAgainButtonRectPixels:Rect;
 private var gameOverBackButtonRectPixels:Rect;
 
 private var pauseButtonRectPixels:Rect;
-public var resumeButtonRectPixels:Rect;
-public var pauseRestartButtonRectPixels:Rect;
+private var resumeButtonRectPixels:Rect;
+private var pauseRestartButtonRectPixels:Rect;
+
+private var gameOverTextRectsPixels:Rect[];
 
 private var instructionsIndex:int = 0;
 
@@ -77,6 +81,11 @@ function Awake ()
 	pauseButtonRectPixels = calcPixelPosition(pauseButtonRect);
 	resumeButtonRectPixels = calcPixelPosition(resumeButtonRect);
 	pauseRestartButtonRectPixels = calcPixelPosition(pauseRestartButtonRect);
+	gameOverTextRectsPixels = new Rect[gameOverTextRects.length];
+	for(var i:int = 0; i <gameOverTextRects.length; i++)
+	{
+		gameOverTextRectsPixels[i] = calcPixelPosition(gameOverTextRects[i]);
+	}
 }
 
 function Start () 
@@ -153,6 +162,7 @@ function OnGUI ()
 	if(currentScreen == gameOverScreen)
 	{
 		GUI.skin = guiSkins[4];
+		/*
 		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), gameOverScreenTexture);
 		GUI.Label(Rect(50,200,500,100), "Final Score:");
 		GUI.Label(Rect(170,220,500,100), "+");
@@ -168,7 +178,7 @@ function OnGUI ()
 		GUI.skin = guiSkins[5];
 		GUI.Label(Rect(150,200,500,100), scoreManager.getScore().ToString());															//score
 		GUI.Label(Rect(150,240,500,100), (1+scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");								//Purity
-		GUI.Label(Rect(150,280,500,100), Mathf.Floor(scoreManager.getScore() * (0.6+scoreManager.getPercentPurity())).ToString());		//total score
+		GUI.Label(Rect(150,280,500,100), Mathf.Floor(scoreManager.getScore() * (1+scoreManager.getPercentPurity())).ToString());		//total score
 		GUI.Label(Rect(150,310,500,100), scoreManager.getLinesCleared().ToString());													//lines cleared
 		GUI.Label(Rect(150,330,500,100), scoreManager.getLevel().ToString());															//level
 		GUI.Label(Rect(150,350,500,100), String.Format("{0:00}:{1:00}:{2:00}:{3:00}",(Mathf.Floor(scoreManager.playTime)/3600),			//time
@@ -178,7 +188,42 @@ function OnGUI ()
 		GUI.Label(Rect(150,370,500,100), scoreManager.getGlassBlocksCleared().ToString());												//glass
 		GUI.Label(Rect(150,390,500,100), scoreManager.getPaperBlocksCleared().ToString());												//paper
 		GUI.Label(Rect(150,410,500,100), scoreManager.getPlasticBlocksCleared().ToString());											//plastic
+		*/
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), gameOverScreenTexture);
+		GUI.skin.label.normal.textColor = new Color(1.0,1.0,1.0,1.0);
+		GUI.Label(gameOverTextRectsPixels[0], "Final Score:");
+		GUI.Label(gameOverTextRectsPixels[1], "+");
+		GUI.Label(gameOverTextRectsPixels[2], "Line Purity:");
+		GUI.Label(gameOverTextRectsPixels[3], "=");
+		GUI.Label(gameOverTextRectsPixels[4], "Lines Cleared:");
+		GUI.Label(gameOverTextRectsPixels[5], "Final Level:");
+		GUI.Label(gameOverTextRectsPixels[6], "Play Time:");
+		GUI.Label(gameOverTextRectsPixels[7], "Glass Cleared:");
+		GUI.Label(gameOverTextRectsPixels[8], "Paper Cleared:");
+		GUI.Label(gameOverTextRectsPixels[9], "Plastic Cleared:");
+		GUI.Label(gameOverTextRectsPixels[19], "Trees Saved:");
+		GUI.Label(gameOverTextRectsPixels[20], "Barrels of Oil Conserved:");
+		GUI.Label(gameOverTextRectsPixels[21], "Glass Bottles Recycled:");
 
+		GUI.skin = guiSkins[5];
+		GUI.Label(gameOverTextRectsPixels[10], scoreManager.getScore().ToString());															//score
+		GUI.Label(gameOverTextRectsPixels[11], (scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");								//Purity
+		GUI.skin.label.normal.textColor = new Color(0.1,.5,.9,1.0);
+		GUI.Label(gameOverTextRectsPixels[12], Mathf.Floor(scoreManager.getScore() * (1+scoreManager.getPercentPurity())).ToString());		//total score
+		GUI.skin.label.normal.textColor = new Color(1.0,1.0,1.0,1.0);
+		GUI.Label(gameOverTextRectsPixels[13], scoreManager.getLinesCleared().ToString());													//lines cleared
+		GUI.Label(gameOverTextRectsPixels[14], scoreManager.getLevel().ToString());															//level
+		GUI.Label(gameOverTextRectsPixels[15], String.Format("{0:00}:{1:00}:{2:00}:{3:00}",(Mathf.Floor(scoreManager.playTime)/3600),			//time
+																								(Mathf.Floor(scoreManager.playTime)/60),
+																							  (Mathf.Floor(scoreManager.playTime)%60),
+																 ((scoreManager.playTime - Mathf.Floor(scoreManager.playTime))*100)));
+		GUI.Label(gameOverTextRectsPixels[16], scoreManager.getGlassBlocksCleared().ToString());												//glass
+		GUI.Label(gameOverTextRectsPixels[17], scoreManager.getPaperBlocksCleared().ToString());												//paper
+		GUI.Label(gameOverTextRectsPixels[18], scoreManager.getPlasticBlocksCleared().ToString());													//paper
+		GUI.Label(gameOverTextRectsPixels[22], Mathf.Floor(scoreManager.getPaperBlocksCleared() / 22).ToString());	
+		GUI.Label(gameOverTextRectsPixels[23], Mathf.Floor(scoreManager.getPlasticBlocksCleared() / 15).ToString());												//glass
+		GUI.Label(gameOverTextRectsPixels[24], Mathf.Floor(scoreManager.getGlassBlocksCleared() * 8).ToString());
+												//plastic
 		if(GUI.Button(tryAgainButtonRectPixels, "Try again"))
 		{
 			setCurrentScreen(gameScreen);
