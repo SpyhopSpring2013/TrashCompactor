@@ -385,7 +385,7 @@ function moveShape(shape:GridShape,x:int, y:int):boolean
 	}
 	*/
 	//if movement down was possible, but isn't anymore, reset the move timer
-	var canMoveDown:boolean = isMovementPossible(shape, shape.m_x, shape.m_y-1, shape.m_rotation);
+	var canMoveDown:boolean = isMovementPossible(currentShape, currentShape.m_x, currentShape.m_y-1, currentShape.m_rotation);
 	if(canMoveDownLast && !canMoveDown)
 	{
 		currentShapeMoveTimer = 0.0;

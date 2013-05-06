@@ -9,6 +9,7 @@ public var guiManager:GUIManager;
 
 public var startScreenTexture:Texture;
 public var instructionsScreenTextures:Texture[];
+public var controlScreenTextures:Texture[];
 public var pauseScreenTexture:Texture;
 public var gameOverScreenTexture:Texture;
 public var pauseButtonTexture:Texture;
@@ -39,6 +40,7 @@ public var pauseRestartButtonRect:Rect;
 public var gameOverTextRects:Rect[];
 
 public var currentScreen:int = 0;
+public var inputType:int;
 
 //screen vars
 public var gameScreen:int = 0;
@@ -46,6 +48,7 @@ public var startScreen:int = 1;
 public var gameOverScreen:int = 2;
 public var pauseScreen:int = 3;
 public var instructionsScreen:int = 4;
+public var controlScreen:int = 5;
 
 private var startButtonRectPixels:Rect;
 private var instructionsButtonRectPixels:Rect;
@@ -130,11 +133,19 @@ function OnGUI ()
 		}
 		if(instructionsIndex >= instructionsScreenTextures.length)
 		{
+			setCurrentScreen(controlScreen);
+		}
+	}
+
+	if(currentScreen == controlScreen)
+	{
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), controlScreenTextures[inputType]);
+		if(GUI.Button(instructionsNextButtonRectPixels, "Next", guiSkins[1].button))
+		{
 			setCurrentScreen(gameScreen);
 			startNewGame(1);
 		}
 	}
-
 	if(currentScreen == gameScreen)
 	{
 		//pause button

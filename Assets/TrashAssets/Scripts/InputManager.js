@@ -11,7 +11,7 @@ private var keyPressedRefireDelay:float[] = [0.15, 0.15, 0.15, 0.15];
 
 function Start () 
 {
-
+	uiManager.inputType = inputType;
 }
 
 function Update () 
