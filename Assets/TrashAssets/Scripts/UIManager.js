@@ -215,7 +215,6 @@ function OnGUI ()
 		GUI.Label(gameOverTextRectsPixels[19], "Trees Saved:");
 		GUI.Label(gameOverTextRectsPixels[20], "Barrels of Oil Conserved:");
 		GUI.Label(gameOverTextRectsPixels[21], "Glass Bottles Recycled:");
-
 		GUI.skin = guiSkins[5];
 		GUI.Label(gameOverTextRectsPixels[10], scoreManager.getScore().ToString());															//score
 		GUI.Label(gameOverTextRectsPixels[11], (scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");								//Purity
@@ -230,11 +229,10 @@ function OnGUI ()
 																 ((scoreManager.playTime - Mathf.Floor(scoreManager.playTime))*100)));
 		GUI.Label(gameOverTextRectsPixels[16], scoreManager.getGlassBlocksCleared().ToString());												//glass
 		GUI.Label(gameOverTextRectsPixels[17], scoreManager.getPaperBlocksCleared().ToString());												//paper
-		GUI.Label(gameOverTextRectsPixels[18], scoreManager.getPlasticBlocksCleared().ToString());													//paper
-		GUI.Label(gameOverTextRectsPixels[22], Mathf.Floor(scoreManager.getPaperBlocksCleared() / 22).ToString());	
-		GUI.Label(gameOverTextRectsPixels[23], Mathf.Floor(scoreManager.getPlasticBlocksCleared() / 15).ToString());												//glass
-		GUI.Label(gameOverTextRectsPixels[24], Mathf.Floor(scoreManager.getGlassBlocksCleared() * 8).ToString());
-												//plastic
+		GUI.Label(gameOverTextRectsPixels[18], scoreManager.getPlasticBlocksCleared().ToString());												//paper
+		GUI.Label(gameOverTextRectsPixels[22], Mathf.Floor(scoreManager.getPaperBlocksCleared() / 60).ToString());
+		GUI.Label(gameOverTextRectsPixels[23], Mathf.Floor(scoreManager.getPlasticBlocksCleared() / 14.5).ToString());
+		GUI.Label(gameOverTextRectsPixels[24], Mathf.Floor(scoreManager.getGlassBlocksCleared() * 20).ToString());
 		if(GUI.Button(tryAgainButtonRectPixels, "Try again"))
 		{
 			setCurrentScreen(gameScreen);
