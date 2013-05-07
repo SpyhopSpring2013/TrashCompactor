@@ -19,6 +19,7 @@ public var guiSkins:GUISkin[];
 public var music:AudioClip[];
 public var lineClearSounds:AudioClip[];
 public var dropBlockSounds:AudioClip[];
+public var gameOverSound:AudioClip;
 
 
 public var blockTemplates:GameObject[];
@@ -218,7 +219,7 @@ function OnGUI ()
 		GUI.skin = guiSkins[5];
 		GUI.Label(gameOverTextRectsPixels[10], scoreManager.getScore().ToString());															//score
 		GUI.Label(gameOverTextRectsPixels[11], (scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");								//Purity
-		GUI.skin.label.normal.textColor = new Color(0.1,.5,.9,1.0);
+		GUI.skin.label.normal.textColor = new Color(1.0,.4,.4,1.0);
 		GUI.Label(gameOverTextRectsPixels[12], Mathf.Floor(scoreManager.getScore() * (1+scoreManager.getPercentPurity())).ToString());		//total score
 		GUI.skin.label.normal.textColor = new Color(1.0,1.0,1.0,1.0);
 		GUI.Label(gameOverTextRectsPixels[13], scoreManager.getLinesCleared().ToString());													//lines cleared
@@ -321,7 +322,9 @@ function onClearLine(row:int, style:int)
 	screenGrid.clearLine(row);
 	lineClearParticles.onClearLine(row,style);
 	guiManager.onPurityChange(scoreManager.getPercentPurity());
-	Camera.main.GetComponent(AudioSource).PlayOneShot(lineClearSounds[Random.Range(0,lineClearSounds.length-1)]);
+	if(style > 4)
+		style = 4;
+	Camera.main.GetComponent(AudioSource).PlayOneShot(lineClearSounds[style - 1]);
 }
 
 function onNewNextShape(xVals:Array, yVals:Array, materials:Array)
@@ -414,7 +417,9 @@ function setCurrentScreen(screen:int)
 	}
 	if(screen == gameOverScreen)
 	{
-		//cameraAudioSource.PlayOneShot()
+		cameraAudioSource.PlayOneShot(gameOverSound);
+		cameraAudioSource.clip = music[1];
+		cameraAudioSource.Play();
 	}
 
 	if(screen == instructionsScreen)
