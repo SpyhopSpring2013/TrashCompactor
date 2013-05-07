@@ -55,12 +55,6 @@
      <Compile Include="Assets\InputTouches\ExampleScripts\C#\TapDemo.cs" />
      <Compile Include="Assets\InputTouches\ExampleScripts\C#\Target.cs" />
      <Compile Include="Assets\InputTouches\ExampleScripts\C#\Turret.cs" />
-     <Compile Include="Assets\InputTouches\FPSDisplay\FpsDisplay.cs" />
-     <Compile Include="Assets\_Scripts\CarCamera.cs" />
-     <Compile Include="Assets\back up files\iTween\Sample\MoveSample.cs" />
-     <Compile Include="Assets\back up files\iTween\Sample\RotateSample.cs" />
-     <Compile Include="Assets\back up files\iTween\Sample\SampleInfo.cs" />
-     <Compile Include="Assets\back up files\iTween\iTween.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap Reflective.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Particles Additive Culled.shader" />

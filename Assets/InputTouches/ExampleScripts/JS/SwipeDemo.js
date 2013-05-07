@@ -125,7 +125,7 @@ function OnSwipe(sw:SwipeInfo){
 	//StartCoroutine(ShowSwipeIndicator(sw));  pleh
 
 	
-	Debug.Log(sw.angle);
+	//Debug.Log(sw.angle);
 	if(sw.angle>315 || sw.angle<45){
 		//Swipe right
 		
@@ -211,7 +211,6 @@ function OnGUI(){
 */
 
 function OnShortTap(pos: Vector2){
-	Debug.Log("Short Tap Function");
 		var ray: Ray = Camera.main.ScreenPointToRay(pos);
 		var hit:RaycastHit;
 		if(Physics.Raycast(ray, hit, Mathf.Infinity)){
