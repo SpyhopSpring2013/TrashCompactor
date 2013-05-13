@@ -84,11 +84,12 @@ function Update ()
 				for(var j:int = 0; j< 4; j++)
 					keyPressedRefireTimer[j] = keyPressedRefireDelay[j];
 			}
-
+			/*
 			if(Input.GetKeyDown(KeyCode.R))
 			{
 				uiManager.startNewGame(1);
 			}
+			*/
 			else if(Input.GetKeyDown(KeyCode.X))
 			{
 				uiManager.rotateCurrentShapeRight();
@@ -110,6 +111,7 @@ function Update ()
 				//debug functions
 			}
 		}
+		/*
 		if(uiManager.currentScreen == uiManager.gameOverScreen)
 		{
 			if(Input.GetKeyDown(KeyCode.R))
@@ -117,6 +119,7 @@ function Update ()
 				uiManager.startNewGame(1);
 			}
 		}
+		*/
 	break;
 //--------------------------------------------------//
 

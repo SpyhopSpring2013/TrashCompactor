@@ -13,6 +13,7 @@ public var controlScreenTextures:Texture[];
 public var pauseScreenTexture:Texture;
 public var gameOverScreenTexture:Texture;
 public var pauseButtonTexture:Texture;
+public var creditsScreenTexture:Texture;
 
 public var guiSkins:GUISkin[];
 
@@ -32,7 +33,8 @@ public var startButtonRect:Rect;
 public var instructionsNextButtonRect:Rect;
 
 public var tryAgainButtonRect:Rect;
-public var gameOverBackButtonRect:Rect;
+public var gameOverCreditsButtonRect:Rect;
+public var creditsBackButtonRect:Rect;
 
 public var pauseButtonRect:Rect;
 public var resumeButtonRect:Rect;
@@ -50,16 +52,18 @@ public var gameOverScreen:int = 2;
 public var pauseScreen:int = 3;
 public var instructionsScreen:int = 4;
 public var controlScreen:int = 5;
+public var creditsScreen:int = 6;
 
 private var startButtonRectPixels:Rect;
 private var instructionsButtonRectPixels:Rect;
 private var highscoresButtonRectPixels:Rect;
 private var creditsButtonRectPixels:Rect;
+private var creditsBackButtonRectPixels:Rect;
 
 private var instructionsNextButtonRectPixels:Rect;
 
 private var tryAgainButtonRectPixels:Rect;
-private var gameOverBackButtonRectPixels:Rect;
+private var gameOverCreditsButtonRectPixels:Rect;
 
 private var pauseButtonRectPixels:Rect;
 private var resumeButtonRectPixels:Rect;
@@ -81,7 +85,8 @@ function Awake ()
 	*/
 	instructionsNextButtonRectPixels = calcPixelPosition(instructionsNextButtonRect);
 	tryAgainButtonRectPixels = calcPixelPosition(tryAgainButtonRect);
-	gameOverBackButtonRectPixels = calcPixelPosition(gameOverBackButtonRect);
+	gameOverCreditsButtonRectPixels = calcPixelPosition(gameOverCreditsButtonRect);
+	creditsBackButtonRectPixels = calcPixelPosition(creditsBackButtonRect);
 	pauseButtonRectPixels = calcPixelPosition(pauseButtonRect);
 	resumeButtonRectPixels = calcPixelPosition(resumeButtonRect);
 	pauseRestartButtonRectPixels = calcPixelPosition(pauseRestartButtonRect);
@@ -238,6 +243,20 @@ function OnGUI ()
 		{
 			setCurrentScreen(gameScreen);
 			startNewGame(1);
+		}
+		if(GUI.Button(gameOverCreditsButtonRectPixels, "Credits"))
+		{
+			setCurrentScreen(creditsScreen);
+		}
+	}
+
+	if(currentScreen == creditsScreen)
+	{
+		GUI.skin = guiSkins[4];
+		GUI.DrawTexture(Rect(0,0,Screen.width, Screen.height), creditsScreenTexture);
+		if(GUI.Button(creditsBackButtonRectPixels, "Back"))
+		{
+			setCurrentScreen(gameOverScreen);
 		}
 	}
 
@@ -417,9 +436,12 @@ function setCurrentScreen(screen:int)
 	}
 	if(screen == gameOverScreen)
 	{
-		cameraAudioSource.PlayOneShot(gameOverSound);
-		cameraAudioSource.clip = music[1];
-		cameraAudioSource.Play();
+		if(cameraAudioSource.clip != music[1])
+		{
+			cameraAudioSource.PlayOneShot(gameOverSound);
+			cameraAudioSource.clip = music[1];
+			cameraAudioSource.Play();
+		}
 	}
 
 	if(screen == instructionsScreen)

@@ -1,6 +1,7 @@
 public var sparkEffectGlass: GameObject;
 public var sparkEffectPaper: GameObject;
 public var sparkEffectPlastic: GameObject;
+public var sparkEffectAll: GameObject;
 
 
 
@@ -28,6 +29,14 @@ public function onClearLine(row:int, style:int)
 	}
 	if(style == 3){
 	Instantiate(sparkEffectPlastic, Vector3(uiManager.posOffset.x+uiManager.blockSize.x*10/2,
+									uiManager.posOffset.y + uiManager.blockSize.y*row + uiManager.blockSize.y/2,
+									uiManager.posOffset.z-3),
+									Quaternion.identity);
+	}
+
+	if(style > 3)
+	{
+		Instantiate(sparkEffectAll, Vector3(uiManager.posOffset.x+uiManager.blockSize.x*10/2,
 									uiManager.posOffset.y + uiManager.blockSize.y*row + uiManager.blockSize.y/2,
 									uiManager.posOffset.z-3),
 									Quaternion.identity);
