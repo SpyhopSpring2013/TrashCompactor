@@ -11,6 +11,7 @@ private var popupFadeTextArray:Array;
 
 private var level:int;
 private var purity:float;
+private var linesCleared:int;
 
 //POSITIONS ARE DEFINED AS PERCENT OF SCREEN WIDTH/HEIGHT
 
@@ -20,6 +21,8 @@ public var levelTextRect:Rect;
 public var levelRect:Rect;
 public var purityTextRect:Rect;
 public var purityRect:Rect;
+public var linesClearedTextRect:Rect;
+public var linesClearedRect:Rect;
 
 private var scoreTextRectPixels:Rect;
 private var scoreRectPixels:Rect;
@@ -27,6 +30,8 @@ private var levelTextRectPixels:Rect;
 private var levelRectPixels:Rect;
 private var purityTextRectPixels:Rect;
 private var purityRectPixels:Rect;
+private var linesClearedTextRectPixels:Rect;
+private var linesClearedRectPixels:Rect;
 
 private var scorePopupPosition:Vector2;
 
@@ -38,6 +43,8 @@ function Awake()
 	levelRectPixels = UIManager.calcPixelPosition(levelRect);
 	purityTextRectPixels = UIManager.calcPixelPosition(purityTextRect);
 	purityRectPixels = UIManager.calcPixelPosition(purityRect);
+	linesClearedTextRectPixels = UIManager.calcPixelPosition(linesClearedTextRect);
+	linesClearedRectPixels = UIManager.calcPixelPosition(linesClearedRect);
 
 	scorePopupPosition = Vector2(scoreRectPixels.x, scoreRectPixels.y - Screen.height*.0244);
 }
@@ -55,6 +62,7 @@ function onNewGame(level:int)
 	score = 0;
 	popupFadeTextArray = new Array();
 	purity = 1.0;
+	linesCleared = 0;
 }
 
 function OnGUI()
@@ -101,10 +109,18 @@ function OnGUI()
 		GUI.Label(scoreTextRectPixels, "Score:", guiSkins[0].label);
 		GUI.Label(levelTextRectPixels, "Level:", guiSkins[0].label);
 		GUI.Label(purityTextRectPixels, "Purity:", guiSkins[0].label);
+		GUI.Label(linesClearedTextRectPixels, "Lines:", guiSkins[0].label);
 		//score text
 		GUI.Label(scoreRectPixels, score.ToString(), guiSkins[1].label);
 		GUI.Label(levelRectPixels, level.ToString(), guiSkins[1].label);
+
+		if(purity < .55)
+			guiSkins[1].label.normal.textColor = Color(1,0,0,1);
+		else if(purity > .85)
+			guiSkins[1].label.normal.textColor = Color(.2,1,.2,1);
 		GUI.Label(purityRectPixels, (purity*100.0).ToString("F2") + "%", guiSkins[1].label);
+		guiSkins[1].label.normal.textColor = Color(1,1,1,1);
+		GUI.Label(linesClearedRectPixels, linesCleared.ToString(), guiSkins[1].label);
 	}
 
 }
@@ -125,4 +141,9 @@ public function onLevelChange(nLevel:int)
 public function onPurityChange(nPurity:float)
 {
 	purity = nPurity;
+}
+
+public function onLinesClearedChange(nLines:int)
+{
+	linesCleared = nLines;
 }

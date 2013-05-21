@@ -223,8 +223,12 @@ function OnGUI ()
 		GUI.Label(gameOverTextRectsPixels[21], "Glass Bottles Recycled:");
 		GUI.skin = guiSkins[5];
 		GUI.Label(gameOverTextRectsPixels[10], scoreManager.getScore().ToString());															//score
+		if(scoreManager.getPercentPurity() < .55)
+			GUI.skin.label.normal.textColor = Color(1,0,0,1);
+		else if(scoreManager.getPercentPurity() > .85)
+			GUI.skin.label.normal.textColor = Color(.2,1,.2,1);
 		GUI.Label(gameOverTextRectsPixels[11], (scoreManager.getPercentPurity()*100.0).ToString("F2") + "%");								//Purity
-		GUI.skin.label.normal.textColor = new Color(1.0,.4,.4,1.0);
+		GUI.skin.label.normal.textColor = new Color(.51,.78,1,1);
 		GUI.Label(gameOverTextRectsPixels[12], Mathf.Floor(scoreManager.getScore() * (1+scoreManager.getPercentPurity())).ToString());		//total score
 		GUI.skin.label.normal.textColor = new Color(1.0,1.0,1.0,1.0);
 		GUI.Label(gameOverTextRectsPixels[13], scoreManager.getLinesCleared().ToString());													//lines cleared
@@ -341,6 +345,7 @@ function onClearLine(row:int, style:int)
 	screenGrid.clearLine(row);
 	lineClearParticles.onClearLine(row,style);
 	guiManager.onPurityChange(scoreManager.getPercentPurity());
+	guiManager.onLinesClearedChange(scoreManager.getLinesCleared());
 	if(style > 4)
 		style = 4;
 	Camera.main.GetComponent(AudioSource).PlayOneShot(lineClearSounds[style - 1]);
