@@ -39,6 +39,7 @@ public var creditsBackButtonRect:Rect;
 public var pauseButtonRect:Rect;
 public var resumeButtonRect:Rect;
 public var pauseRestartButtonRect:Rect;
+public var muteButtonRect:Rect;
 
 public var gameOverTextRects:Rect[];
 
@@ -68,6 +69,7 @@ private var gameOverCreditsButtonRectPixels:Rect;
 private var pauseButtonRectPixels:Rect;
 private var resumeButtonRectPixels:Rect;
 private var pauseRestartButtonRectPixels:Rect;
+private var muteButtonRectPixels:Rect;
 
 private var gameOverTextRectsPixels:Rect[];
 
@@ -90,6 +92,7 @@ function Awake ()
 	pauseButtonRectPixels = calcPixelPosition(pauseButtonRect);
 	resumeButtonRectPixels = calcPixelPosition(resumeButtonRect);
 	pauseRestartButtonRectPixels = calcPixelPosition(pauseRestartButtonRect);
+	muteButtonRectPixels = calcPixelPosition(muteButtonRect);
 	gameOverTextRectsPixels = new Rect[gameOverTextRects.length];
 	for(var i:int = 0; i <gameOverTextRects.length; i++)
 	{
@@ -173,6 +176,23 @@ function OnGUI ()
 		{
 			setCurrentScreen(gameScreen);
 			startNewGame(1);
+		}
+		var cameraAudioSource:AudioSource = Camera.main.GetComponent(AudioSource);
+		if(cameraAudioSource.enabled && cameraAudioSource.isPlaying)
+		{
+			if(GUI.Button(muteButtonRectPixels, "Mute"))
+			{
+				cameraAudioSource.Stop();
+				cameraAudioSource.enabled = false;
+			}
+		}
+		else
+		{
+			if(GUI.Button(muteButtonRectPixels, "Unmute"))
+			{
+				cameraAudioSource.enabled = true;
+				cameraAudioSource.Play();
+			}
 		}
 	}
 
